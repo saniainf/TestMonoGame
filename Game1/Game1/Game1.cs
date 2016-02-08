@@ -13,13 +13,14 @@ namespace Game1
         GraphicsDeviceManager graphics;
         SpriteFont arial;
         SpriteBatch spriteBatch;
-        Texture2D texture1;
+        Texture2D egg;
+        Texture2D board;
         Random rand = new Random();
-        Rectangle rect1;
-        float speed;
-        float angle;
-        Vector2 vDirection;
-        Vector2 vPosition;
+        Rectangle rEgg;
+        float speedEgg;
+        float angleEgg;
+        Vector2 vDirectionEgg;
+        Vector2 vPositionEgg;
 
         int wWidth;
         int wHeight;
@@ -41,12 +42,13 @@ namespace Game1
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            rect1 = new Rectangle(0, 0, 16, 16);
+            rEgg = new Rectangle(0, 0, 16, 16);
             wWidth = this.Window.ClientBounds.Width;
             wHeight = this.Window.ClientBounds.Height;
-            speed = 1f;
-            angle = 0f;
-            vDirection = new Vector2(1, 0);
+            speedEgg = 5f;
+            angleEgg = 0f;
+            vDirectionEgg = new Vector2(0, 1);
+            vPositionEgg = new Vector2(wWidth / 2, 0);
         }
 
         /// <summary>
@@ -57,7 +59,8 @@ namespace Game1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            texture1 = Content.Load<Texture2D>("square");
+            egg = Content.Load<Texture2D>("square");
+            board = Content.Load<Texture2D>("board");
             arial = Content.Load<SpriteFont>("arial");
             // TODO: use this.Content to load your game content here
         }
@@ -75,11 +78,21 @@ namespace Game1
         {
             float newX;
             float newY;
-            newX = (float)(vDirection.X * Math.Cos(angle) - vDirection.Y * Math.Sin(angle));
-            newY = (float)(vDirection.X * Math.Sin(angle) + vDirection.Y * Math.Cos(angle));
-            vDirection.X = newX;
-            vDirection.Y = newY;
-            vDirection.Normalize();
+            //newX = (float)(vDirection.X * Math.Cos(angle) - vDirection.Y * Math.Sin(angle));
+            //newY = (float)(vDirection.X * Math.Sin(angle) + vDirection.Y * Math.Cos(angle));
+            //vDirection.X = newX;
+            //vDirection.Y = newY;
+            //float h = (float)(1 / Math.Sin(angle));
+            newX = (float)Math.Cos(Math.PI / 180 * angleEgg);
+            newY = (float)Math.Sin(Math.PI / 180 * angleEgg);
+            if (Math.Sign(vDirectionEgg.X) < 0)
+                newX = -newX;
+            if (Math.Sign(vDirectionEgg.Y) < 0)
+                newY = -newY;
+            vDirectionEgg.X = newX;
+            vDirectionEgg.Y = newY;
+
+            //vDirection.Normalize();
         }
 
         protected override void Update(GameTime gameTime)
@@ -88,42 +101,46 @@ namespace Game1
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                angle -= 1f;
+                angleEgg -= 1f;
+                if (angleEgg < 0)
+                    angleEgg = 0;
                 changeAngle();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                angle = 1f;
+                angleEgg += 1f;
+                if (angleEgg > 180)
+                    angleEgg = 180;
                 changeAngle();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                speed += 0.05f;
+                speedEgg += 0.05f;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                speed -= 0.05f;
+                speedEgg -= 0.05f;
             }
-            if (speed < 0)
-                speed = 0;
+            if (speedEgg < 0)
+                speedEgg = 0;
 
 
 
 
-            if (rect1.Y >= wHeight - rect1.Height)
-                vDirection.Y = -vDirection.Y;
-            if (rect1.Y <= 0)
-                vDirection.Y = Math.Abs(vDirection.Y);
+            if (rEgg.Y >= wHeight - rEgg.Height)
+                vDirectionEgg.Y = -vDirectionEgg.Y;
+            if (rEgg.Y <= 0)
+                vDirectionEgg.Y = Math.Abs(vDirectionEgg.Y);
 
-            if (rect1.X <= 0)
-                vDirection.X = Math.Abs(vDirection.X);
-            if (rect1.X > wWidth - rect1.Width)
-                vDirection.X = -vDirection.X;
+            if (rEgg.X <= 0)
+                vDirectionEgg.X = Math.Abs(vDirectionEgg.X);
+            if (rEgg.X > wWidth - rEgg.Width)
+                vDirectionEgg.X = -vDirectionEgg.X;
 
-            vPosition += speed * vDirection;
+            vPositionEgg += speedEgg * vDirectionEgg;
 
-            rect1.X = (int)vPosition.X;
-            rect1.Y = (int)vPosition.Y;
+            rEgg.X = (int)vPositionEgg.X;
+            rEgg.Y = (int)vPositionEgg.Y;
             base.Update(gameTime);
         }
 
@@ -136,9 +153,11 @@ namespace Game1
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            spriteBatch.DrawString(arial, "angle: " + angle.ToString(), new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(arial, "speed: " + speed.ToString(), new Vector2(10, 30), Color.White);
-            spriteBatch.Draw(texture1, rect1, Color.White);
+            spriteBatch.DrawString(arial, "angle: " + angleEgg.ToString(), new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(arial, "speed: " + speedEgg.ToString(), new Vector2(10, 30), Color.White);
+            spriteBatch.DrawString(arial, "direction X: " + vDirectionEgg.X.ToString(), new Vector2(10, 50), Color.White);
+            spriteBatch.DrawString(arial, "direction Y: " + vDirectionEgg.Y.ToString(), new Vector2(10, 70), Color.White);
+            spriteBatch.Draw(egg, rEgg, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
