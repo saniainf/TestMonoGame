@@ -9,46 +9,35 @@ namespace EggGame
 {
     public class Sprite
     {
-        public Vector2 Location
-        {
-            get { return spritePosition; }
-            set { spritePosition = value; }
-        }
-
-        public int Width
-        {
-            get { return spriteRectangle.Width; }
-            set { spriteRectangle.Width = value; }
-        }
-
-        public int Height
-        {
-            get { return spriteRectangle.Height; }
-            set { spriteRectangle.Height = value; }
-        }
-
+        private Texture2D spriteSheet;
         private List<Rectangle> frames = new List<Rectangle>();
         private int currentFrame;
-        private Rectangle spriteRectangle;
-        private Vector2 spritePosition;
-        private Texture2D spriteTexture;
-        
+        private float frameTime;
+        private float currentFrameTime;
 
-        public Sprite(Point size, Point location, Texture2D texture)
+        private Rectangle sourceRectangle;
+        private Vector2 locationVector;
+        private Vector2 spriteLocation;
+        private float spriteRotation;
+        private Vector2 spriteOrigin;
+        private Vector2 spriteScale;
+        private float drawDepth;
+        private Color spriteColor;
+
+
+        public Sprite(Texture2D texture, Rectangle firstFrame, int frameCount, float frameTime)
         {
-            this.spriteTexture = texture;
-            this.spritePosition = location.ToVector2();
-            spriteRectangle = new Rectangle(location, size);
+
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            spriteRectangle.Location = spritePosition.ToPoint();
+            
         }
 
         public virtual void Draw(GameTime gametime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(spriteTexture, spriteRectangle, Color.White);
+            spriteBatch.Draw(spriteSheet, locationVector, sourceRectangle, spriteColor, spriteRotation, spriteOrigin, spriteScale, SpriteEffects.None, drawDepth);
         }
     }
 }
