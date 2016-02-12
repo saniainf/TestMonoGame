@@ -9,6 +9,12 @@ namespace EggGame
 {
     public class Sprite
     {
+        public Vector2 Location
+        {
+            get { return locationVector; }
+            set { locationVector = value; }
+        }
+
         private Animation spriteAnimation;
         private Texture2D spriteSheet;
         private List<Rectangle> frames = new List<Rectangle>();
@@ -42,13 +48,20 @@ namespace EggGame
             this.spriteOrigin = origin ?? Vector2.Zero;
             this.spriteScale = scale ?? new Vector2(1f);
             this.orderLayer = orderLayer;
-            this.spriteColor = color ?? Color.White; 
+            this.spriteColor = color ?? Color.White;
         }
         public virtual void Update(GameTime gameTime)
         {
-
+            currentFrameTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (currentFrameTime > frameTime)
+            {
+                currentFrameTime = 0;
+                currentFrame += 1;
+            }
+            currentFrame = (currentFrame + 1) % frames.Count - 1;
+            sourceRectangle = frames[currentFrame];
         }
-        public virtual void Draw(GameTime gametime, SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(spriteSheet, locationVector, sourceRectangle, spriteColor, spriteRotation, spriteOrigin, spriteScale, SpriteEffects.None, orderLayer);
         }
