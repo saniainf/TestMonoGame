@@ -12,7 +12,11 @@ namespace EggGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle screenRectangle;
-        Sprite Egg;
+
+        Sprite egg;
+        Animation animationEgg;
+        Texture2D texture;
+        Color color = new Color();
 
         public EggGameMain()
         {
@@ -41,6 +45,9 @@ namespace EggGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            texture = Content.Load<Texture2D>("egg");
+            animationEgg = new Animation(texture, new Rectangle(0, 0, 96, 16), 1, false, 1);
+            egg = new Sprite(animationEgg);
 
             // TODO: use this.Content to load your game content here
         }
@@ -75,9 +82,16 @@ namespace EggGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            Vector2 scale = new Vector2(1f);
+            Vector2 origin = new Vector2(5f);
+            Vector2 location = new Vector2(10f);
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            //spriteBatch.Draw(texture, location, null, Color.White, 0.1f, origin, scale, SpriteEffects.None, 0f);
+            egg.Draw(gameTime, spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
