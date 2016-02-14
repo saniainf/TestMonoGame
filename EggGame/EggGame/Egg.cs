@@ -11,23 +11,36 @@ namespace EggGame
     class Egg
     {
         private Texture2D texture;
-        private Animation animationEgg;
-        private Sprite spriteEgg;
-        public Egg(ContentManager content)
+        private Animation idleAnimation;
+        private Sprite sprite;
+        private int windowWidth;
+        private int windowHeight;
+        private float speed;
+        private float angle;
+        private Vector2 direction;
+        private Vector2 location;
+
+        public Egg(ContentManager content, int wWidth, int wHeight)
         {
-            texture = content.Load<Texture2D>("run");
-            animationEgg = new Animation(texture, new Rectangle(0, 0, texture.Width / 10, texture.Height), 10, true, 100);
-            spriteEgg = new Sprite(animationEgg);
+            angle = 90f;
+            speed = 5f;
+            direction = new Vector2(1,1);
+            location = Vector2.Zero;
+            windowHeight = wHeight;
+            windowWidth = wWidth;
+            texture = content.Load<Texture2D>("egg");
+            idleAnimation = new Animation(texture, new Rectangle(0, 0, texture.Width, texture.Height), 1, true, 0);
+            sprite = new Sprite(idleAnimation);
         }
         public void Update(GameTime gameTime)
         {
-            spriteEgg.Update(gameTime);
-            spriteEgg.Location = new Vector2(spriteEgg.Location.X + 1, spriteEgg.Location.Y);
+            sprite.Location += speed * direction;
+            sprite.Update(gameTime);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            spriteEgg.Draw(gameTime, spriteBatch);
+            sprite.Draw(gameTime, spriteBatch);
             spriteBatch.End();
         }
     }

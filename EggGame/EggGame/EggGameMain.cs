@@ -11,8 +11,9 @@ namespace EggGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        bool keydown;
         Rectangle screenRectangle;
-        Egg player;
+        Egg egg;
 
         public EggGameMain()
         {
@@ -27,7 +28,7 @@ namespace EggGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player = new Egg(Content);
+            egg = new Egg(Content, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
         }
         protected override void UnloadContent()
         {
@@ -35,15 +36,15 @@ namespace EggGame
         }
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            player.Update(gameTime);
+            egg.Update(gameTime);
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            player.Draw(gameTime, spriteBatch);
+            egg.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);
         }
     }
