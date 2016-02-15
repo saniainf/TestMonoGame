@@ -125,7 +125,7 @@ namespace EggGame
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (isEnable)
-                spriteBatch.Draw(spriteSheet, locationVector, sourceRectangle, spriteColor, spriteRotation, spriteOrigin, spriteScale, spriteEffect, orderLayer);
+                spriteBatch.Draw(spriteSheet, new Vector2((int)locationVector.X, (int)locationVector.Y), sourceRectangle, spriteColor, spriteRotation, spriteOrigin, spriteScale, spriteEffect, orderLayer);
         }
     }
 }
