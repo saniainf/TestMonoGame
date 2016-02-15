@@ -11,7 +11,6 @@ namespace EggGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        bool keydown;
         Rectangle screenRectangle;
         Egg egg;
 
