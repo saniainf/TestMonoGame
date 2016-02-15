@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace EggGame
 {
@@ -12,7 +13,7 @@ namespace EggGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle screenRectangle;
-        Egg egg;
+        List<Egg> eggs = new List<Egg>();
 
         public EggGameMain()
         {
@@ -27,7 +28,7 @@ namespace EggGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            egg = new Egg(Content, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height);
+            eggs.Add(new Egg(Content, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
         }
         protected override void UnloadContent()
         {
@@ -37,13 +38,17 @@ namespace EggGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            egg.Update(gameTime);
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                eggs.Add(new Egg(Content, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
+            foreach (Egg egg in eggs)
+                egg.Update(gameTime);
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            egg.Draw(gameTime, spriteBatch);
+            foreach (Egg egg in eggs)
+                egg.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);
         }
     }
