@@ -39,14 +39,26 @@ namespace EggGame
             set { locationVector.Y = value; }
         }
 
+        public Rectangle CurrentRectangle
+        {
+            get { return new Rectangle((int)X, (int)Y, Width, Height); }
+            set
+            {
+                locationVector.X = value.X;
+                locationVector.Y = value.Y;
+                sourceRectangle.Width = value.Width;
+                sourceRectangle.Height = value.Height;
+            }
+        }
+
         public int Width
         {
-            get { return frames[currentFrame].Width; }
+            get { return sourceRectangle.Width; }
         }
 
         public int Height
         {
-            get { return frames[currentFrame].Height; }
+            get { return sourceRectangle.Height; }
         }
 
         public bool AnimationPlay

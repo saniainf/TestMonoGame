@@ -39,8 +39,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
+    <Compile Include="Collision.cs" />
     <Compile Include="Egg.cs" />
     <Compile Include="EggGameMain.cs" />
+    <Compile Include="Paddle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sprite.cs" />

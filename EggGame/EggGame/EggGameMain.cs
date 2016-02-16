@@ -10,10 +10,14 @@ namespace EggGame
     /// </summary>
     public class EggGameMain : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Rectangle screenRectangle;
-        List<Egg> eggs = new List<Egg>();
+        static public int WindowWidth { get; set; }
+        static public int WindowHeight { get; set; }
+
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private Rectangle screenRectangle;
+        private List<Egg> eggs = new List<Egg>();
+        private Paddle paddle;
 
         public EggGameMain()
         {
@@ -23,12 +27,15 @@ namespace EggGame
         protected override void Initialize()
         {
             screenRectangle = this.Window.ClientBounds;
+            WindowWidth = screenRectangle.Width;
+            WindowHeight = screenRectangle.Height;
             base.Initialize();
         }
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            eggs.Add(new Egg(Content, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
+            eggs.Add(new Egg(Content, 50f));
+            paddle = new Paddle(Content);
         }
         protected override void UnloadContent()
         {
@@ -39,14 +46,16 @@ namespace EggGame
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                eggs.Add(new Egg(Content, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height));
+                eggs.Add(new Egg(Content, 50f));
+            paddle.Update(gameTime);
             foreach (Egg egg in eggs)
-                egg.Update(gameTime);
+                egg.Update(gameTime, paddle);
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            paddle.Draw(gameTime, spriteBatch);
             foreach (Egg egg in eggs)
                 egg.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);

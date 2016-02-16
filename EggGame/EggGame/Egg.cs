@@ -25,47 +25,37 @@ namespace EggGame
         private Texture2D texture;
         private Animation idleAnimation;
         private Sprite sprite;
-        private int windowWidth;
-        private int windowHeight;
         private float speed;
         private Vector2 direction;
 
-        public Egg(ContentManager content, int wWidth, int wHeight)
+        public Egg(ContentManager content, float speed)
         {
             arial = content.Load<SpriteFont>("arial");
-            speed = 5f;
+            this.speed = speed;
             direction = new Vector2(0, -1);
             direction.Normalize();
-            windowHeight = wHeight;
-            windowWidth = wWidth;
             texture = content.Load<Texture2D>("egg");
             idleAnimation = new Animation(texture, new Rectangle(0, 0, texture.Width, texture.Height), 1, true, 0);
-            sprite = new Sprite(idleAnimation, locationVector: new Vector2(windowWidth / 2 - texture.Width / 2, windowHeight - texture.Height * 2));
+            sprite = new Sprite(idleAnimation, locationVector: new Vector2(EggGameMain.WindowWidth / 2 - texture.Width / 2, EggGameMain.WindowHeight - texture.Height * 3));
         }
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Paddle paddle)
         {
-            if (sprite.Y >= windowHeight - sprite.Height)
-            {
-                sprite.Y = windowHeight - sprite.Height;
-                direction = Vector2.Reflect(direction, new Vector2(0, 1f));
-            }
-            if (sprite.Y <= 0)
-            {
-                sprite.Y = 0;
-                direction = Vector2.Reflect(direction, new Vector2(0, -1f));
-            }
-            if (sprite.Location.X <= 0)
-            {
-                sprite.X = 0;
-                direction = Vector2.Reflect(direction, new Vector2(1, 0f));
-            }
-            if (sprite.Location.X > windowWidth - sprite.Width)
-            {
-                sprite.X = windowWidth - sprite.Width;
-                direction = Vector2.Reflect(direction, new Vector2(-1, 0f));
-            }
-
-            sprite.Location += speed * direction;
+            float tmpSpeed = 0;
+            if (speed > 1)
+                while (tmpSpeed < speed) // чтоб непроскачить при большой скорости
+                {
+                    sprite.Location += 1f * direction;
+                    if (Collision.RectangleToWall(ref direction, sprite.CurrentRectangle))
+                        break;
+                    if (Collision.RectangleToPaddle(ref direction, sprite.CurrentRectangle, paddle.CurrentRectangle))
+                    {
+                        sprite.Y = paddle.Location.Y - sprite.Height;
+                        break;
+                    }
+                    tmpSpeed += 1f;
+                }
+            else
+                sprite.Location += speed * direction;
 
             sprite.Update(gameTime);
         }
