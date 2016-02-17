@@ -9,46 +9,45 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EggGame
 {
-    class Paddle
+    class Paddle : Sprite
     {
-        public Rectangle CurrentRectangle
-        {
-            get { return sprite.CurrentRectangle; }
-        }
-
-        public Vector2 Location
-        {
-            get { return sprite.Location; }
-            set { sprite.Location = value; }
-        }
-
-        private Texture2D texture;
+        private float speed;
+        private Vector2 direction;
         private Animation idleAnimation;
-        private Sprite sprite;
 
-        public Paddle(ContentManager content)
+        public Paddle(ContentManager content, Vector2? startPosition = null)
+            : base()
         {
-            texture = content.Load<Texture2D>("paddle");
-            idleAnimation = new Animation(texture, new Rectangle(0, 0, texture.Width, texture.Height), 1, true, 0);
-            sprite = new Sprite(idleAnimation, locationVector: new Vector2(EggGameMain.WindowWidth / 2 - texture.Width / 2, EggGameMain.WindowHeight - texture.Height * 2));
+            speed = 5f;
+            direction = new Vector2(0, -1);
+            direction.Normalize();
+            spriteSheet = content.Load<Texture2D>("paddle");
+            idleAnimation = new Animation(spriteSheet, new Rectangle(0, 0, spriteSheet.Width, spriteSheet.Height), 1, true, 0);
+            locationVector = startPosition ?? new Vector2(EggGameMain.ScreenRectangle.Center.X, 200);
+            LoadAnimation(idleAnimation);
         }
-        public void Update(GameTime gameTime)
+
+        public override void LoadAnimation(Animation animation)
+        {
+            base.LoadAnimation(animation);
+        }
+
+        public override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                sprite.X -= 3f;
+                locationVector.X -= 5f;
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                sprite.X += 3f;
+                locationVector.X += 5f;
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                sprite.Y -= 3f;
+                locationVector.Y -= 5f;
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                sprite.Y += 3f;
-            sprite.Update(gameTime);
+                locationVector.Y += 5f;
+            base.Update(gameTime);
         }
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
-            sprite.Draw(gameTime, spriteBatch);
-            spriteBatch.End();
+            base.Draw(gameTime, spriteBatch);
         }
     }
 }

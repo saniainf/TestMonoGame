@@ -4,44 +4,22 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace EggGame
 {
     public class Sprite
     {
-        public Animation CurrentAnimation
-        {
-            get { return spriteAnimation; }
-            set { spriteAnimation = value; }
-        }
-
-        public Texture2D SpriteSheet
-        {
-            get { return spriteSheet; }
-            set { spriteSheet = value; }
-        }
-
-        public Vector2 Location
-        {
-            get { return locationVector; }
-            set { locationVector = value; }
-        }
-
-        public float X
-        {
-            get { return locationVector.X; }
-            set { locationVector.X = value; }
-        }
-
-        public float Y
-        {
-            get { return locationVector.Y; }
-            set { locationVector.Y = value; }
-        }
-
         public Rectangle CurrentRectangle
         {
-            get { return new Rectangle((int)X, (int)Y, Width, Height); }
+            get
+            {
+                return new Rectangle(
+                    (int)locationVector.X,
+                    (int)locationVector.Y,
+                    sourceRectangle.Width,
+                    sourceRectangle.Height);
+            }
             set
             {
                 locationVector.X = value.X;
@@ -51,65 +29,42 @@ namespace EggGame
             }
         }
 
-        public int Width
+        public Vector2 Center
         {
-            get { return sourceRectangle.Width; }
+            get
+            {
+                return new Vector2(
+                    locationVector.X + sourceRectangle.Width / 2,
+                    locationVector.Y + sourceRectangle.Height / 2);
+            }
         }
 
-        public int Height
+        public Animation spriteAnimation;
+        public Texture2D spriteSheet;
+        public List<Rectangle> frames = new List<Rectangle>();
+        public int currentFrame;
+        public float frameTime;
+        public float currentFrameTime;
+        public bool animationLooping;
+        public bool animationPlay;
+        public bool isEnable;
+
+        public Rectangle sourceRectangle;
+        public Vector2 locationVector;
+        public float spriteRotation;
+        public Vector2 spriteOrigin;
+        public Vector2 spriteScale;
+        public SpriteEffects spriteEffect;
+        public float orderLayer;
+        public Color spriteColor;
+
+        public Sprite(int startFrame = 0, bool animationLooping = true, bool animationPlay = true, bool isEnable = true, Vector2? locationVector = null, float rotation = 0f, SpriteEffects? spriteEffect = null, Vector2? origin = null, Vector2? scale = null, float orderLayer = 0, Color? color = null)
         {
-            get { return sourceRectangle.Height; }
-        }
-
-        public bool AnimationPlay
-        {
-            get { return animationPlay; }
-            set { animationPlay = value; }
-        }
-
-        public bool AnimationLooping
-        {
-            get { return animationLooping; }
-            set { animationLooping = value; }
-        }
-
-        public bool IsEnable
-        {
-            get { return isEnable; }
-            set { isEnable = value; }
-        }
-
-        private Animation spriteAnimation;
-        private Texture2D spriteSheet;
-        private List<Rectangle> frames = new List<Rectangle>();
-        private int currentFrame;
-        private float frameTime;
-        private float currentFrameTime;
-        private bool animationLooping;
-        private bool animationPlay;
-        private bool isEnable;
-
-        private Rectangle sourceRectangle;
-        private Vector2 locationVector;
-        private float spriteRotation;
-        private Vector2 spriteOrigin;
-        private Vector2 spriteScale;
-        private SpriteEffects spriteEffect;
-        private float orderLayer;
-        private Color spriteColor;
-
-        public Sprite(Animation animation, int startFrame = 0, bool animationLooping = true, bool animationPlay = true, bool isEnable = true, Vector2? locationVector = null, float rotation = 0f, SpriteEffects? spriteEffect = null, Vector2? origin = null, Vector2? scale = null, float orderLayer = 0, Color? color = null)
-        {
-            this.spriteAnimation = animation;
-            this.spriteSheet = animation.SpriteSheet;
-            this.frames = animation.Frames;
             this.currentFrame = startFrame;
-            this.frameTime = animation.FrameTime;
             this.currentFrameTime = 0f;
             this.animationLooping = animationLooping;
             this.animationPlay = animationPlay;
             this.isEnable = isEnable;
-            this.sourceRectangle = frames[currentFrame];
             this.locationVector = locationVector ?? Vector2.Zero;
             this.spriteRotation = rotation;
             this.spriteEffect = spriteEffect ?? SpriteEffects.None;
@@ -118,6 +73,16 @@ namespace EggGame
             this.orderLayer = orderLayer;
             this.spriteColor = color ?? Color.White;
         }
+
+        public virtual void LoadAnimation(Animation animation)
+        {
+            this.spriteAnimation = animation;
+            this.spriteSheet = animation.SpriteSheet;
+            this.frames = animation.Frames;
+            this.frameTime = animation.FrameTime;
+            this.sourceRectangle = frames[currentFrame];
+        }
+
         public virtual void Update(GameTime gameTime)
         {
             if (isEnable && animationPlay && frames.Count > 1)
@@ -137,7 +102,12 @@ namespace EggGame
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (isEnable)
+            {
+                spriteBatch.Begin();
                 spriteBatch.Draw(spriteSheet, new Vector2((int)locationVector.X, (int)locationVector.Y), sourceRectangle, spriteColor, spriteRotation, spriteOrigin, spriteScale, spriteEffect, orderLayer);
+                spriteBatch.End();
+            }
+
         }
     }
 }
