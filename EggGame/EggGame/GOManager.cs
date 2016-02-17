@@ -33,7 +33,8 @@ namespace EggGame
             {
                 while (ball.moveBallonUnit())
                 {
-
+                    ball.checkCollisionToWall();
+                    ball.checkCollisionToPaddle(paddle.CurrentRectangle);
                 }
 
                 ball.Update(gameTime);

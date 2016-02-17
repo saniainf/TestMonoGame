@@ -15,11 +15,12 @@ namespace EggGame
         private float tmpSpeed;
         public Vector2 direction;
         public Animation idleAnimation;
+        private float ratio;
 
         public Ball(ContentManager content, Vector2? startPosition = null)
             : base()
         {
-            speed = 4f;
+            speed = 5f;
 
             direction = new Vector2(0, -1);
             direction.Normalize();
@@ -61,11 +62,11 @@ namespace EggGame
             {
                 direction = Vector2.Reflect(direction, new Vector2(0, 1f));
             }
-            else if (CurrentRectangle.Top < 0)
+            else if (CurrentRectangle.Top < EggGameMain.ScreenRectangle.Top)
             {
                 direction = Vector2.Reflect(direction, new Vector2(0, -1f));
             }
-            else if (CurrentRectangle.Left < 0)
+            else if (CurrentRectangle.Left < EggGameMain.ScreenRectangle.Left)
             {
                 direction = Vector2.Reflect(direction, new Vector2(1, 0f));
             }
@@ -73,15 +74,30 @@ namespace EggGame
             {
                 direction = Vector2.Reflect(direction, new Vector2(-1, 0f));
             }
-            //Collision.RectangleToWall(ref ball.direction, ball.CurrentRectangle);
-            //if (Collision.RectangleToPaddle(ref ball.direction, ball.CurrentRectangle, paddle.CurrentRectangle))
-            //    ball.locationVector.Y = paddle.locationVector.Y - ball.CurrentRectangle.Height;
+        }
+
+        public void checkCollisionToPaddle(Rectangle rectangle)
+        {
+            if (CurrentRectangle.Intersects(rectangle))
+            {
+                Vector2 normal = new Vector2(0, -1);
+                Vector2 secondVector = Vector2.Zero;
+                if (CurrentRectangle.Center.X < rectangle.Center.X)
+                    secondVector = new Vector2(-1, 0);
+                if (CurrentRectangle.Center.X > rectangle.Center.X)
+                    secondVector = new Vector2(1, 0);
+                ratio = (float)Math.Abs((CurrentRectangle.Center.X - rectangle.Center.X) * 0.011);
+                locationVector.Y = rectangle.Top - CurrentRectangle.Height;
+                direction = Vector2.Lerp(normal, secondVector, ratio);
+                direction.Normalize();
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             spriteBatch.DrawString(arial, "direction: " + direction.X + ", " + direction.Y, new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(arial, "ratio: " + ratio, new Vector2(10, 50), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime, spriteBatch);
