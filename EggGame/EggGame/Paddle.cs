@@ -32,13 +32,17 @@ namespace EggGame
         public override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                locationVector -= new Vector2(1, 0) * speed;
+                if (CurrentRectangle.Left > EggGameMain.ScreenRectangle.Left)
+                    locationVector -= new Vector2(1, 0) * speed;
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                locationVector += new Vector2(1, 0) * speed;
+                if (CurrentRectangle.Right < EggGameMain.ScreenRectangle.Right)
+                    locationVector += new Vector2(1, 0) * speed;
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                locationVector -= new Vector2(0, 1) * speed; ;
+                if (CurrentRectangle.Top > EggGameMain.ScreenRectangle.Top + 50)
+                    locationVector -= new Vector2(0, 1) * speed; ;
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                locationVector += new Vector2(0, 1) * speed; ;
+                if (CurrentRectangle.Bottom < EggGameMain.ScreenRectangle.Bottom)
+                    locationVector += new Vector2(0, 1) * speed; ;
             base.Update(gameTime);
         }
 

@@ -11,6 +11,7 @@ namespace EggGame
 {
     class GOManager
     {
+        private SpriteFont arial;
         private List<Ball> balls = new List<Ball>();
         private Paddle paddle;
         private ContentManager content;
@@ -18,39 +19,51 @@ namespace EggGame
         public GOManager(ContentManager content)
         {
             this.content = content;
+            arial = content.Load<SpriteFont>("arial");
         }
 
         public void LoadContent()
         {
-            balls.Add(new Ball(content));
+            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 30)));
             paddle = new Paddle(content);
         }
 
         public void Update(GameTime gameTime)
         {
             paddle.Update(gameTime);
-            foreach (Ball ball in balls)
+            for (int a = 0; a < balls.Count; a++)
             {
-                while (ball.moveBallonUnit())
+                while (balls[a].moveBallonUnit())
                 {
-                    ball.checkCollisionToWall();
-                    ball.checkCollisionToPaddle(paddle.CurrentRectangle);
+                    balls[a].checkCollisionToWall();
+                    balls[a].checkCollisionToPaddle(paddle.CurrentRectangle);
+                    //if (balls.Count > 1)
+                    //{
+                    //    for (int b = a + 1; b < balls.Count; b++)
+                    //        balls[a].checkCollisionToOtherBall(balls[b]);
+                    //}
                 }
-
-                ball.Update(gameTime);
+                balls[a].Update(gameTime);
             }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            int signY = 0;
             foreach (Ball ball in balls)
+            {
+                spriteBatch.Begin();
+                spriteBatch.DrawString(arial, "direction: " + ball.direction.X + ", " + ball.direction.Y + "   " + "speed: " + ball.speed, new Vector2(10, signY), Color.White);
+                spriteBatch.End();
                 ball.Draw(gameTime, spriteBatch);
+                signY += 15;
+            }
             paddle.Draw(gameTime, spriteBatch);
         }
 
         public void AddBall()
         {
-            balls.Add(new Ball(content));
+            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 30)));
         }
     }
 }

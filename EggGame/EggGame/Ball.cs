@@ -10,25 +10,25 @@ namespace EggGame
 {
     class Ball : Sprite
     {
-        private SpriteFont arial;
         public float speed;
         private float tmpSpeed;
         public Vector2 direction;
         public Animation idleAnimation;
         private float ratio;
+        public bool imCollisionCheck;
 
         public Ball(ContentManager content, Vector2? startPosition = null)
             : base()
         {
-            speed = 5f;
+            speed = 3f;
 
             direction = new Vector2(0, -1);
             direction.Normalize();
             spriteSheet = content.Load<Texture2D>("egg");
-            arial = content.Load<SpriteFont>("arial");
             idleAnimation = new Animation(spriteSheet, new Rectangle(0, 0, spriteSheet.Width, spriteSheet.Height), 1, true, 0);
             locationVector = startPosition ?? new Vector2(200, 200);
             LoadAnimation(idleAnimation);
+            imCollisionCheck = false;
         }
 
         public override void LoadAnimation(Animation animation)
@@ -45,8 +45,8 @@ namespace EggGame
         {
             if (tmpSpeed < speed)
             {
-                tmpSpeed++;
-                locationVector += 1f * direction;
+                tmpSpeed += 1f;
+                locationVector += direction * 1f;
                 return true;
             }
             else
@@ -93,13 +93,25 @@ namespace EggGame
             }
         }
 
+        public void checkCollisionToOtherBall(Ball otherBall)
+        {
+            if (Vector2.Distance(Center, otherBall.Center) < (CurrentRectangle.Width / 2 + otherBall.CurrentRectangle.Width / 2))
+            {
+                Vector2 normal1 = Center - otherBall.Center;
+                normal1.Normalize();
+                Vector2 normal2 = otherBall.Center - Center;
+                normal2.Normalize();
+
+                //locationVector += normal2 * 40;
+                //otherBall.locationVector += normal2 * 50;
+
+                direction = Vector2.Reflect(direction, normal2);
+                otherBall.direction = Vector2.Reflect(otherBall.direction, normal1);
+            }
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
-            spriteBatch.DrawString(arial, "direction: " + direction.X + ", " + direction.Y, new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(arial, "ratio: " + ratio, new Vector2(10, 50), Color.White);
-            spriteBatch.End();
-
             base.Draw(gameTime, spriteBatch);
         }
     }

@@ -16,7 +16,7 @@ namespace EggGame
         private SpriteBatch spriteBatch;
         private Rectangle screenRectangle;
         private GOManager goManager;
-
+        private bool keyPress;
         public EggGameMain()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,6 +27,7 @@ namespace EggGame
             screenRectangle = this.Window.ClientBounds;
             ScreenRectangle = screenRectangle;
             goManager = new GOManager(Content);
+            keyPress = false;
             base.Initialize();
         }
         protected override void LoadContent()
@@ -42,8 +43,13 @@ namespace EggGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !keyPress)
+            {
                 goManager.AddBall();
+                keyPress = true;
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.Space) && keyPress)
+                keyPress = false;
             goManager.Update(gameTime);
             base.Update(gameTime);
         }
