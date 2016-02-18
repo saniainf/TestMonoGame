@@ -20,7 +20,7 @@ namespace EggGame
         public Ball(ContentManager content, Vector2? startPosition = null)
             : base()
         {
-            speed = 10f;
+            speed = 4f;
 
             direction = new Vector2(0, -1);
             direction.Normalize();
@@ -95,8 +95,8 @@ namespace EggGame
 
         public bool checkCollisionToBrick(Rectangle rectangle)
         {
-            if (Vector2.Distance(Center, rectangle.Top) < 8)
-                return true;
+            //if (Vector2.Distance(Center, rectangle.Top) < 8)
+            //    return true;
             return false;
         }
         public void checkCollisionToOtherBall(Ball otherBall)
