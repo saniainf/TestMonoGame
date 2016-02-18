@@ -13,6 +13,7 @@ namespace EggGame
     {
         private SpriteFont arial;
         private List<Ball> balls = new List<Ball>();
+        private List<Brick> bricks = new List<Brick>();
         private Paddle paddle;
         private ContentManager content;
 
@@ -24,8 +25,11 @@ namespace EggGame
 
         public void LoadContent()
         {
-            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 30)));
-            paddle = new Paddle(content);
+            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 35)));
+            for (int i = 0; i < 10; i++)
+                for (int e = 0; e < 10; e++)
+                    bricks.Add(new Brick(content, location: new Vector2(EggGameMain.ScreenRectangle.Left + 64 * e + 50, EggGameMain.ScreenRectangle.Top + 32 * i + 20)));
+            paddle = new Paddle(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 15));
         }
 
         public void Update(GameTime gameTime)
@@ -37,6 +41,15 @@ namespace EggGame
                 {
                     balls[a].checkCollisionToWall();
                     balls[a].checkCollisionToPaddle(paddle.CurrentRectangle);
+                    foreach (Brick brick in bricks)
+                    {
+                        if (balls[a].checkCollisionToBrick(brick.CurrentRectangle))
+                        {
+                            brick.isEnable = false;
+                            brick.Update(gameTime);
+                            break;
+                        }
+                    }
                     //if (balls.Count > 1)
                     //{
                     //    for (int b = a + 1; b < balls.Count; b++)
@@ -57,6 +70,10 @@ namespace EggGame
                 spriteBatch.End();
                 ball.Draw(gameTime, spriteBatch);
                 signY += 15;
+            }
+            foreach (Brick brick in bricks)
+            {
+                brick.Draw(gameTime, spriteBatch);
             }
             paddle.Draw(gameTime, spriteBatch);
         }

@@ -12,22 +12,13 @@ namespace Game1
     {
         GraphicsDeviceManager graphics;
         SpriteFont arial;
+        string str;
         SpriteBatch spriteBatch;
-        Texture2D egg;
-        Texture2D board;
-        Rectangle rEgg;
-        Rectangle rBoard;
-        float speedEgg;
-        float angleEgg;
-        Vector2 vDirectionEgg;
-        Vector2 vPositionEgg;
-        Vector2 vPositionBoard;
-        float ratio;
-
-        int tmpX;
-
-        int wWidth;
-        int wHeight;
+        Texture2D brick, ball;
+        Vector2 locationBrick, locationBall;
+        Rectangle rectBrick, rectBall;
+        int radius;
+        Vector2 direction, reflectDirection;
 
         public Game1()
         {
@@ -46,17 +37,6 @@ namespace Game1
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            wWidth = this.Window.ClientBounds.Width;
-            wHeight = this.Window.ClientBounds.Height;
-            speedEgg = 5f;
-            angleEgg = 90f;
-            rEgg = new Rectangle(0, 0, 16, 16);
-            rBoard = new Rectangle(0, 0, 96, 16);
-            vDirectionEgg = new Vector2(0, 0);
-            vPositionEgg = new Vector2(wWidth / 2 - rEgg.Width / 2, 0);
-            vPositionBoard = new Vector2(wWidth / 2 - rBoard.Width / 2, wHeight - board.Height * 2);
-            ratio = (70f / (rBoard.Width / 2f));
-            changeAngle();
         }
 
         /// <summary>
@@ -67,9 +47,17 @@ namespace Game1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            egg = Content.Load<Texture2D>("square");
-            board = Content.Load<Texture2D>("board");
             arial = Content.Load<SpriteFont>("arial");
+            brick = Content.Load<Texture2D>("brick");
+            ball = Content.Load<Texture2D>("ball");
+            locationBrick = new Vector2(this.Window.ClientBounds.Center.X - brick.Width / 2, this.Window.ClientBounds.Center.Y - brick.Height / 2);
+            locationBall = Vector2.Zero;
+            rectBrick = new Rectangle((int)locationBrick.X, (int)locationBrick.Y, brick.Width, brick.Height);
+            rectBall = new Rectangle((int)locationBall.X, (int)locationBall.Y, ball.Width, ball.Height);
+            radius = ball.Width / 2;
+            str = "";
+            direction = Vector2.Zero;
+            reflectDirection = Vector2.Zero;
             // TODO: use this.Content to load your game content here
         }
 
@@ -82,102 +70,92 @@ namespace Game1
             // TODO: Unload any non ContentManager content here
         }
 
-        void changeAngle()
-        {
-            float newX;
-            float newY;
-            newX = (float)Math.Cos(Math.PI / 180 * angleEgg);
-            newY = (float)Math.Sin(Math.PI / 180 * angleEgg);
-            if (Math.Sign(vDirectionEgg.Y) < 0)
-                newY = -newY;
-            vDirectionEgg.X = newX;
-            vDirectionEgg.Y = newY;
-        }
-
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                vPositionBoard.X -= 6f;
+                direction.X = -1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                vPositionBoard.X += 6f;
+                direction.X = 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                speedEgg += 0.05f;
+                direction.Y = -1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                speedEgg -= 0.05f;
+                direction.Y = 1;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                angleEgg = 90f;
-                changeAngle();
-            }
-            if (speedEgg < 0)
-                speedEgg = 0;
-
-            if (rEgg.Y >= wHeight - rEgg.Height)
-                vDirectionEgg.Y = -(Math.Abs(vDirectionEgg.Y));
-            if (rEgg.Y <= 0)
-                vDirectionEgg.Y = Math.Abs(vDirectionEgg.Y);
-            if (rEgg.X <= 0)
-                vDirectionEgg.X = Math.Abs(vDirectionEgg.X);
-            if (rEgg.X > wWidth - rEgg.Width)
-                vDirectionEgg.X = -(Math.Abs(vDirectionEgg.X));
-
-            if (vPositionBoard.X > wWidth - rBoard.Width)
-                vPositionBoard.X = wWidth - rBoard.Width;
-            if (vPositionBoard.X < 0)
-                vPositionBoard.X = 0;
-
-            vPositionEgg += speedEgg * vDirectionEgg;
-
-            rBoard.X = (int)vPositionBoard.X;
-            rBoard.Y = (int)vPositionBoard.Y;
-            rEgg.X = (int)vPositionEgg.X;
-            rEgg.Y = (int)vPositionEgg.Y;
-
-            if (rEgg.Intersects(rBoard))
-            {
-                vDirectionEgg.Y = -(Math.Abs(vDirectionEgg.Y));
-                tmpX = rBoard.Center.X - rEgg.Center.X;
-                if (tmpX != 0)
-                {
-                    if (tmpX > (rBoard.Width / 2f) || tmpX < -(rBoard.Width / 2f))
-                        tmpX = (int)(rBoard.Width / 2f) * Math.Sign(tmpX);
-                    angleEgg = tmpX * ratio;
-                    angleEgg = 90f + angleEgg;
-                    changeAngle();
-                }
-            }
-
             base.Update(gameTime);
+            locationBall = Mouse.GetState().Position.ToVector2();
+            rectBall.Location = locationBall.ToPoint();
+            str = "";
+            CheckCollision();
         }
 
+        void CheckCollision()
+        {
+            Vector2 pA, pB, pC, pD;
+            pA = rectBrick.Location.ToVector2();
+            pB = new Vector2(rectBrick.Right, rectBrick.Top);
+            pC = new Vector2(rectBrick.Left, rectBrick.Bottom);
+            pD = new Vector2(rectBrick.Right, rectBrick.Bottom);
+
+            if (rectBall.Center.X > rectBrick.Left &
+                rectBall.Center.X < rectBrick.Right &
+                rectBall.Center.Y > rectBrick.Top - radius &
+                rectBall.Center.Y < rectBrick.Top)
+                str = "Intersect";
+            if (rectBall.Center.X > rectBrick.Left &
+                rectBall.Center.X < rectBrick.Right &
+                rectBall.Center.Y > rectBrick.Bottom &
+                rectBall.Center.Y < rectBrick.Bottom + radius)
+                str = "Intersect";
+            if (rectBall.Center.X > rectBrick.Left - radius &
+                rectBall.Center.X < rectBrick.Left &
+                rectBall.Center.Y > rectBrick.Top &
+                rectBall.Center.Y < rectBrick.Bottom)
+                str = "Intersect";
+            if (rectBall.Center.X > rectBrick.Right &
+                rectBall.Center.X < rectBrick.Right + radius &
+                rectBall.Center.Y > rectBrick.Top &
+                rectBall.Center.Y < rectBrick.Bottom)
+                str = "Intersect";
+
+            if (Vector2.Distance(pA, rectBall.Center.ToVector2()) < radius)
+                str = "Intersect";
+            if (Vector2.Distance(pB, rectBall.Center.ToVector2()) < radius)
+                str = "Intersect";
+            if (Vector2.Distance(pC, rectBall.Center.ToVector2()) < radius)
+                str = "Intersect";
+            if (Vector2.Distance(pD, rectBall.Center.ToVector2()) < radius)
+                str = "Intersect";
+
+            if (rectBall.Center.X > rectBrick.Left &
+                rectBall.Center.X < rectBrick.Right &
+                rectBall.Center.Y > rectBrick.Top &
+                rectBall.Center.Y < rectBrick.Bottom)
+                str = "Intersect";
+
+        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            spriteBatch.DrawString(arial, "angle: " + angleEgg.ToString(), new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(arial, "ratio: " + ratio.ToString() + ", " + tmpX, new Vector2(10, 30), Color.White);
-            spriteBatch.DrawString(arial, "speed: " + speedEgg.ToString(), new Vector2(10, 50), Color.White);
-            spriteBatch.DrawString(arial, "direction X: " + vDirectionEgg.X.ToString(), new Vector2(10, 70), Color.White);
-            spriteBatch.DrawString(arial, "direction Y: " + vDirectionEgg.Y.ToString(), new Vector2(10, 90), Color.White);
-            spriteBatch.Draw(egg, new Vector2(rEgg.X + 2, rEgg.Y + 2), Color.Black);
-            spriteBatch.Draw(board, new Vector2(rBoard.X + 3, rBoard.Y + 3), Color.Black);
-            spriteBatch.Draw(egg, rEgg, Color.White);
-            spriteBatch.Draw(board, rBoard, Color.White);
+            spriteBatch.Draw(brick, locationBrick, Color.White);
+            spriteBatch.Draw(ball, locationBall, Color.White);
+            spriteBatch.DrawString(arial, str, new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(arial, "direction X: " + direction.X + ", Y: " + direction.Y, new Vector2(10, 30), Color.White);
+            spriteBatch.DrawString(arial, "direction X: " + reflectDirection.X + ", Y: " + reflectDirection.Y, new Vector2(10, 50), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -98,13 +98,18 @@ namespace EggGame
                 }
                 sourceRectangle = frames[currentFrame];
             }
+            if (!isEnable)
+            {
+                sourceRectangle = new Rectangle(0, 0, 0, 0);
+                locationVector = Vector2.Zero;
+            }
         }
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (isEnable)
             {
                 spriteBatch.Begin();
-                spriteBatch.Draw(spriteSheet, new Vector2((int)locationVector.X, (int)locationVector.Y), sourceRectangle, spriteColor, spriteRotation, spriteOrigin, spriteScale, spriteEffect, orderLayer);
+                spriteBatch.Draw(spriteSheet, locationVector, sourceRectangle, spriteColor, spriteRotation, spriteOrigin, spriteScale, spriteEffect, orderLayer);
                 spriteBatch.End();
             }
 

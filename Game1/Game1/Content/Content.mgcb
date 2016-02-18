@@ -13,35 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin scottpilgrim_multiple.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:TextureFormat=Color
-/build:scottpilgrim_multiple.png
-
-#begin square.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:TextureFormat=Color
-/build:square.png
-
 #begin arial.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
 /build:arial.spritefont
 
-#begin board.png
+#begin brick.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -50,5 +28,16 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
-/build:board.png
+/build:brick.png
+
+#begin ball.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:ball.png
 

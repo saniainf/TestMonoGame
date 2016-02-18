@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Ball.cs" />
+    <Compile Include="Brick.cs" />
     <Compile Include="EggGameMain.cs" />
     <Compile Include="GOManager.cs" />
     <Compile Include="Paddle.cs" />
