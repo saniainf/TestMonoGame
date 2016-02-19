@@ -20,10 +20,13 @@ namespace EggGame
         public EggGameMain()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
         }
         protected override void Initialize()
         {
+            
             screenRectangle = this.Window.ClientBounds;
             ScreenRectangle = screenRectangle;
             goManager = new GOManager(Content);

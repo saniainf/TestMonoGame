@@ -26,35 +26,40 @@ namespace EggGame
         public void LoadContent()
         {
             balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 35)));
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 8; i++)
                 for (int e = 0; e < 10; e++)
-                    bricks.Add(new Brick(content, location: new Vector2(EggGameMain.ScreenRectangle.Left + 64 * e + 50, EggGameMain.ScreenRectangle.Top + 32 * i + 20)));
+                    bricks.Add(new Brick(content, location: new Vector2(EggGameMain.ScreenRectangle.Left + 64 * e + 50, EggGameMain.ScreenRectangle.Top + 32 * i + 50)));
             paddle = new Paddle(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 15));
         }
 
         public void Update(GameTime gameTime)
         {
+            bool brickOff;
+            brickOff = false;
             paddle.Update(gameTime);
             for (int a = 0; a < balls.Count; a++)
             {
-                while (balls[a].moveBallonUnit())
+                while (balls[a].moveBallonUnit(gameTime))
                 {
                     balls[a].checkCollisionToWall();
                     balls[a].checkCollisionToPaddle(paddle.CurrentRectangle);
-                    foreach (Brick brick in bricks)
-                    {
-                        if (balls[a].checkCollisionToBrick(brick.CurrentRectangle))
+                    if (!brickOff)
+                        foreach (Brick brick in bricks)
                         {
-                            brick.isEnable = false;
-                            brick.Update(gameTime);
-                            break;
+                            if (brick.isEnable)
+                                if (balls[a].checkCollisionToBrick(brick.CurrentRectangle))
+                                {
+                                    //brick.isEnable = false;
+                                    brick.Update(gameTime);
+                                    //brickOff = true;
+                                    break;
+                                }
                         }
+                    if (balls.Count > 1)
+                    {
+                        for (int b = a + 1; b < balls.Count; b++)
+                            balls[a].checkCollisionToOtherBall(balls[b]);
                     }
-                    //if (balls.Count > 1)
-                    //{
-                    //    for (int b = a + 1; b < balls.Count; b++)
-                    //        balls[a].checkCollisionToOtherBall(balls[b]);
-                    //}
                 }
                 balls[a].Update(gameTime);
             }
@@ -62,20 +67,20 @@ namespace EggGame
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            int signY = 0;
-            foreach (Ball ball in balls)
-            {
-                spriteBatch.Begin();
-                spriteBatch.DrawString(arial, "direction: " + ball.direction.X + ", " + ball.direction.Y + "   " + "speed: " + ball.speed, new Vector2(10, signY), Color.White);
-                spriteBatch.End();
-                ball.Draw(gameTime, spriteBatch);
-                signY += 15;
-            }
+            paddle.Draw(gameTime, spriteBatch);
             foreach (Brick brick in bricks)
             {
                 brick.Draw(gameTime, spriteBatch);
             }
-            paddle.Draw(gameTime, spriteBatch);
+            int signY = 0;
+            foreach (Ball ball in balls)
+            {
+                spriteBatch.Begin();
+                spriteBatch.DrawString(arial, "direction: " + ball.direction.X + ", " + ball.direction.Y + "   " + "speed: " + ball.speed, new Vector2(10, signY), Color.Black);
+                spriteBatch.End();
+                ball.Draw(gameTime, spriteBatch);
+                signY += 15;
+            }
         }
 
         public void AddBall()
