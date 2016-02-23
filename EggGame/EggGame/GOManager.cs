@@ -29,7 +29,7 @@ namespace EggGame
             for (int i = 0; i < 8; i++)
                 for (int e = 0; e < 10; e++)
                     bricks.Add(new Brick(content, location: new Vector2(EggGameMain.ScreenRectangle.Left + 64 * e + 50, EggGameMain.ScreenRectangle.Top + 32 * i + 50)));
-            paddle = new Paddle(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 15));
+            paddle = new Paddle(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 30));
         }
 
         public void Update(GameTime gameTime)
@@ -49,17 +49,17 @@ namespace EggGame
                             if (brick.isEnable)
                                 if (balls[a].checkCollisionToBrick(brick.CurrentRectangle))
                                 {
-                                    //brick.isEnable = false;
+                                    brick.isEnable = false;
                                     brick.Update(gameTime);
                                     //brickOff = true;
                                     break;
                                 }
                         }
-                    if (balls.Count > 1)
-                    {
-                        for (int b = a + 1; b < balls.Count; b++)
-                            balls[a].checkCollisionToOtherBall(balls[b]);
-                    }
+                    //if (balls.Count > 1)
+                    //{
+                    //    for (int b = a + 1; b < balls.Count; b++)
+                    //        balls[a].checkCollisionToOtherBall(balls[b]);
+                    //}
                 }
                 balls[a].Update(gameTime);
             }
