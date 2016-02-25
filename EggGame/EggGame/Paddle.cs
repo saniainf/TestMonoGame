@@ -17,20 +17,22 @@ namespace EggGame
         private float gravity;
         private float friction;
         private float acceleration;
+        private float inertia;
         private Animation idleAnimation;
 
         public Paddle(ContentManager content, Vector2? startPosition = null)
             : base()
         {
             speed = 0f;
-            maxSpeed = 5f;
+            maxSpeed = 8f;
             spriteSheet = content.Load<Texture2D>("paddle");
             idleAnimation = new Animation(spriteSheet, new Rectangle(0, 0, spriteSheet.Width, spriteSheet.Height), 1, true, 0);
             locationVector = startPosition ?? new Vector2(EggGameMain.ScreenRectangle.Center.X, 200);
             LoadAnimation(idleAnimation);
-            friction = 0.1f;
             gravity = 0.9f;
+            friction = 0.1f;
             acceleration = 0.5f;
+            inertia = 0;
         }
 
         public override void LoadAnimation(Animation animation)
@@ -42,50 +44,46 @@ namespace EggGame
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                direction = new Vector2(-1, 0);
-                leftOrRight();
+                direction.X = -1;
+                speed = Math.Min(speed + acceleration, maxSpeed);
             }
-            else if (speed > 0)
-                speed -= friction;
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+
+            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                direction = new Vector2(1, 0);
-                leftOrRight();
+                direction.X = 1;
+                speed = Math.Min(speed + acceleration, maxSpeed);
             }
-            else if (speed > 0)
-                speed -= friction;
+            else
+                direction.X = 0;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                direction = new Vector2(0, -1);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                direction = new Vector2(0, 1);
+
             }
 
-            if (speed > 0 && !collisionToWall())
-                locationVector += direction * speed;
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+
+            }
+
+            if (speed > 0)
+                speed = Math.Max(0f, speed - friction - inertia);
+
+
+            locationVector.X += direction.X * (speed + inertia);
             base.Update(gameTime);
         }
 
-        private void leftOrRight()
-        {
-            if (speed < maxSpeed)
-                speed += acceleration;
-        }
-
-        private bool collisionToWall()
+        private void collisionToWall()
         {
             if (CurrentRectangle.Left <= EggGameMain.ScreenRectangle.Left)
-                return true;
-            if (CurrentRectangle.Right >= EggGameMain.ScreenRectangle.Right)
-                return true;
-            if (CurrentRectangle.Top <= EggGameMain.ScreenRectangle.Top + 50)
-                return true;
-            if (CurrentRectangle.Bottom >= EggGameMain.ScreenRectangle.Bottom)
-                return true;
-            return false;
+                locationVector.X = 0;
+            if (CurrentRectangle.Right > EggGameMain.ScreenRectangle.Right)
+                locationVector.X = EggGameMain.ScreenRectangle.Right - CurrentRectangle.Width;
+            if (CurrentRectangle.Top < EggGameMain.ScreenRectangle.Top + 50)
+                locationVector.Y = EggGameMain.ScreenRectangle.Top + 50;
+            if (CurrentRectangle.Bottom > EggGameMain.ScreenRectangle.Bottom)
+                locationVector.Y = EggGameMain.ScreenRectangle.Bottom - CurrentRectangle.Height;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

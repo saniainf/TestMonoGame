@@ -5,20 +5,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Game1
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
+        Rectangle window;
         SpriteFont arial;
-        string str, reflectStr;
         SpriteBatch spriteBatch;
-        Texture2D brick, ball;
-        Vector2 locationBrick, locationBall;
-        Rectangle rectBrick, rectBall;
-        int radius;
-        Vector2 direction, reflectDirection;
+        Texture2D brick;
+        Vector2 location;
+        Vector2 position;
+        Vector2 direction;
+        float speed, maxSpeed;
+        float acc;
+        float frc, airFrc;
+        float airSpeed, maxAirSpeed, maxFallSpeed;
+        float airAcc;
+        float grav;
 
         public Game1()
         {
@@ -26,186 +28,166 @@ namespace Game1
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            window = this.Window.ClientBounds;
             arial = Content.Load<SpriteFont>("arial");
             brick = Content.Load<Texture2D>("brick");
-            ball = Content.Load<Texture2D>("ball");
-            locationBrick = new Vector2(this.Window.ClientBounds.Center.X - brick.Width / 2, this.Window.ClientBounds.Center.Y - brick.Height / 2);
-            locationBall = Vector2.Zero;
-            rectBrick = new Rectangle((int)locationBrick.X, (int)locationBrick.Y, brick.Width, brick.Height);
-            rectBall = new Rectangle((int)locationBall.X, (int)locationBall.Y, ball.Width, ball.Height);
-            radius = ball.Width / 2;
-            str = "";
-            reflectStr = "";
+            location = new Vector2(window.Width / 2 - brick.Width / 2, window.Height - brick.Height);
+            //location = Vector2.Zero;
             direction = Vector2.Zero;
-            reflectDirection = Vector2.Zero;
-            // TODO: use this.Content to load your game content here
+            speed = 0;
+            maxSpeed = 600;
+            acc = 1000;
+            frc = 2000;
+            airFrc = 500;
+            airSpeed = 0;
+            maxAirSpeed = 500;
+            maxFallSpeed = 500;
+            airAcc = 600;
+            grav = 1000;
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
+
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
         protected override void Update(GameTime gameTime)
         {
+            float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left)) // жмем влево
             {
-                direction.X = -1;
+                if (direction.X == 0) // если направление не заданно то можно изменить
+                    direction.X = -1;
+                if (direction.X < 0) // если движемся влево 
+                    speed = Math.Min(speed + acc * time, maxSpeed); // увеличиваем скорость
+                else // если движемся вправо
+                    if (onGround())
+                        speed = Math.Max(speed - frc * time - acc * time, 0); // тормозим с ускорением на земле 
+                    else
+                        speed = Math.Max(speed - airFrc * time - acc * time, 0); //тормозим с ускорением в воздухе
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                direction.X = 1;
+                if (direction.X == 0)
+                    direction.X = 1;
+                if (direction.X > 0)
+                    speed = Math.Min(speed + acc * time, maxSpeed);
+                else
+                    if (onGround())
+                        speed = Math.Max(speed - frc * time - acc * time, 0);
+                    else
+                        speed = Math.Max(speed - airFrc * time - acc * time, 0);
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            else // ни влево ни вправо, движемся по инерции
+                if (onGround())
+                    speed = Math.Max(speed - frc * time, 0); // тормозим на земле 
+                else
+                    speed = Math.Max(speed - airFrc * time, 0); // тормозим в воздухе
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                if (onGround())
+                    speed = Math.Max(speed - frc * time - acc * time, 0); // тормозим с ускорением на земле
+                else
+                    speed = Math.Max(speed - airFrc * time - acc * time, 0); //тормозим с ускорением в воздухе
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up)) // жмем вверх
             {
-                direction.Y = -1;
+                if (direction.Y == 0) // если направление не заданно то можно изменить
+                    direction.Y = -1;
+                if (direction.Y < 0)
+                    airSpeed = Math.Min(airSpeed + airAcc * time, maxAirSpeed); // если летим то ускоряемся
+                else
+                    airSpeed = Math.Max(airSpeed - airAcc * time, 0); // если падаем то тормозим падение
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            else if (!onGround()) // не жмем вверх
             {
-                direction.Y = 1;
+                if (direction.Y < 0)
+                    airSpeed = Math.Max(airSpeed - grav * time, 0); // если летим вверх то тормозим
+                if (direction.Y == 0) // если скорость равна 0 то можно падать
+                    direction.Y = 1;
+                if (direction.Y > 0)
+                    airSpeed = Math.Min(airSpeed + grav * time, maxFallSpeed); // если падаем, то увеличиваем скорость падения
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down) && !onGround())
+            {
+                if (direction.Y < 0)
+                    airSpeed = Math.Max(airSpeed - grav * time - airAcc * time, 0); // если летим вверх то тормозим с ускорением
+                if (direction.Y == 0) // если направление не заданно то можно изменить
+                    direction.Y = 1;
+                if (direction.Y > 0)
+                    airSpeed = Math.Min(airSpeed + grav * time + airAcc * time, maxFallSpeed); // если падаем, то увеличиваем скорость падения с ускорением
+            }
+
+            if (speed == 0)
+                direction.X = 0;
+            if (airSpeed == 0)
+                direction.Y = 0;
+
+            location.X += direction.X * speed * time;
+            location.Y += direction.Y * airSpeed * time;
+            handleCollision();
+
+            position.X = (float)Math.Round(location.X, 0);
+            position.Y = (float)Math.Round(location.Y, 0);
+
             base.Update(gameTime);
-            locationBall = Mouse.GetState().Position.ToVector2();
-            rectBall.Location = locationBall.ToPoint();
-            str = "";
-            reflectStr = "";
-            CheckCollision();
         }
 
-        void CheckCollision()
+        private bool onGround()
         {
-            Vector2 pA, pB, pC, pD;
-            Vector2 pATop, pALeft;
-            Vector2 pBTop, pBRight;
-            Vector2 pCLeft, pCBottom;
-            Vector2 pDRight, pDBottom;
-            pA = rectBrick.Location.ToVector2();
-            pB = new Vector2(rectBrick.Right, rectBrick.Top);
-            pC = new Vector2(rectBrick.Left, rectBrick.Bottom);
-            pD = new Vector2(rectBrick.Right, rectBrick.Bottom);
-            pATop = new Vector2(rectBrick.Left, rectBrick.Top - radius);
-            pALeft = new Vector2(rectBrick.Left - radius, rectBrick.Top);
-            pBTop = new Vector2(rectBrick.Right, rectBrick.Top - radius);
-            pBRight = new Vector2(rectBrick.Right + radius, rectBrick.Top);
-            pCLeft = new Vector2(rectBrick.Left - radius, rectBrick.Bottom);
-            pCBottom = new Vector2(rectBrick.Left, rectBrick.Bottom + radius);
-            pDRight = new Vector2(rectBrick.Right + radius, rectBrick.Bottom);
-            pDBottom = new Vector2(rectBrick.Right, rectBrick.Bottom + radius);
-
-            if (rectBall.Center.X > rectBrick.Left &
-                rectBall.Center.X < rectBrick.Right &
-                rectBall.Center.Y > rectBrick.Top - radius &
-                rectBall.Center.Y < rectBrick.Top)
-            {
-                str = "Intersect";
-                reflectStr = "Top";
-            }
-            if (rectBall.Center.X > rectBrick.Left &
-                rectBall.Center.X < rectBrick.Right &
-                rectBall.Center.Y > rectBrick.Bottom &
-                rectBall.Center.Y < rectBrick.Bottom + radius)
-            {
-                str = "Intersect";
-                reflectStr = "Bottom";
-            }
-            if (rectBall.Center.X > rectBrick.Left - radius &
-                rectBall.Center.X < rectBrick.Left &
-                rectBall.Center.Y > rectBrick.Top &
-                rectBall.Center.Y < rectBrick.Bottom)
-            {
-                str = "Intersect";
-                reflectStr = "Left";
-            }
-            if (rectBall.Center.X > rectBrick.Right &
-                rectBall.Center.X < rectBrick.Right + radius &
-                rectBall.Center.Y > rectBrick.Top &
-                rectBall.Center.Y < rectBrick.Bottom)
-            {
-                str = "Intersect";
-                reflectStr = "Right";
-            }
-
-            if (Vector2.Distance(pA, rectBall.Center.ToVector2()) < radius)
-            {
-                str = "Intersect";
-                if (Vector2.Distance(rectBall.Center.ToVector2(), pATop) > Vector2.Distance(rectBall.Center.ToVector2(), pALeft))
-                    reflectStr = "Left";
-                else
-                    reflectStr = "Top";
-            }
-            if (Vector2.Distance(pB, rectBall.Center.ToVector2()) < radius)
-            {
-                str = "Intersect";
-                if (Vector2.Distance(rectBall.Center.ToVector2(), pBTop) > Vector2.Distance(rectBall.Center.ToVector2(), pBRight))
-                    reflectStr = "Right";
-                else
-                    reflectStr = "Top";
-            }
-            if (Vector2.Distance(pC, rectBall.Center.ToVector2()) < radius)
-            {
-                if (Vector2.Distance(rectBall.Center.ToVector2(), pCBottom) > Vector2.Distance(rectBall.Center.ToVector2(), pCLeft))
-                    reflectStr = "Left";
-                else
-                    reflectStr = "Bottom";
-                str = "Intersect";
-            }
-            if (Vector2.Distance(pD, rectBall.Center.ToVector2()) < radius)
-            {
-                if (Vector2.Distance(rectBall.Center.ToVector2(), pDBottom) > Vector2.Distance(rectBall.Center.ToVector2(), pDRight))
-                    reflectStr = "Right";
-                else
-                    reflectStr = "Bottom";
-                str = "Intersect";
-            }
-
-            //if (rectBall.Center.X > rectBrick.Left &
-            //    rectBall.Center.X < rectBrick.Right &
-            //    rectBall.Center.Y > rectBrick.Top &
-            //    rectBall.Center.Y < rectBrick.Bottom)
-            //    str = "Intersect";
-
+            if (location.Y >= window.Height - brick.Height)
+                return true;
+            else
+                return false;
         }
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
+        void handleCollision()
+        {
+            if (location.X < 0)
+            {
+                location.X = 0;
+                speed = 0;
+            }
+            if (location.X + brick.Width > window.Width)
+            {
+                location.X = window.Width - brick.Width;
+                speed = 0;
+            }
+            if (location.Y < 0)
+            {
+                location.Y = 0;
+                airSpeed = 0;
+            }
+            if (location.Y + brick.Height > window.Height)
+            {
+                location.Y = window.Height - brick.Height;
+                airSpeed = 0;
+            }
+        }
+
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(brick, locationBrick, Color.White);
-            spriteBatch.Draw(ball, locationBall, Color.White);
-            spriteBatch.DrawString(arial, str, new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(arial, reflectStr, new Vector2(10, 30), Color.White);
-            //spriteBatch.DrawString(arial, "direction X: " + direction.X + ", Y: " + direction.Y, new Vector2(10, 50), Color.White);
+            spriteBatch.Draw(brick, position, Color.White);
+            spriteBatch.DrawString(arial, onGround().ToString(), new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(arial, "X: " + direction.X + ", Y: " + direction.Y, new Vector2(10, 30), Color.White);
+            spriteBatch.DrawString(arial, speed.ToString(), new Vector2(10, 50), Color.White);
+            spriteBatch.DrawString(arial, airSpeed.ToString(), new Vector2(10, 70), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
