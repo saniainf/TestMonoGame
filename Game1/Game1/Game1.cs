@@ -51,7 +51,7 @@ namespace Game1
             maxAirSpeed = 500;
             maxFallSpeed = 500;
             airAcc = 600;
-            grav = 1000;
+            grav = 500;
         }
 
 
