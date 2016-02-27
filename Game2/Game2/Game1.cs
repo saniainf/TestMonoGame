@@ -22,7 +22,7 @@ namespace Game2
         Vector2 pointA;
         Vector2 pointB;
 
-        int cellSize = 100;
+        int cellSize = 50;
 
         Dictionary<int, List<gameObject>> cells = new Dictionary<int, List<gameObject>>();
         Dictionary<gameObject, int> objects = new Dictionary<gameObject, int>();
@@ -114,8 +114,8 @@ namespace Game2
 
         void checkCell(int x, int y)
         {
-            int hashId = ((int)Math.Floor((float)x / cellSize)) + ((int)Math.Floor((float)y / cellSize)) * screenSize.Width / cellSize;
-            if (cells.ContainsKey(hashId))
+            int hashId = x + y * screenSize.Width / cellSize;
+            if (hashId >= 0 && cells.ContainsKey(hashId))
             {
                 for (int i = 0; i < cells[hashId].Count; i++)
                 {
