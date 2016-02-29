@@ -21,6 +21,7 @@ namespace Game3
         Vector2 pointA;
         Vector2 pointB;
         int indx;
+        Texture2D dot;
 
         public Game1()
         {
@@ -32,8 +33,8 @@ namespace Game3
 
         protected override void Initialize()
         {
-            base.Initialize();
             this.IsMouseVisible = true;
+            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -41,6 +42,7 @@ namespace Game3
             spriteBatch = new SpriteBatch(GraphicsDevice);
             arial = Content.Load<SpriteFont>("arialbd");
             tCell = Content.Load<Texture2D>("cell");
+            dot = Content.Load<Texture2D>("dot");
             for (int i = 0; i < hCell; i++)
                 for (int e = 0; e < wCell; e++)
                     gameObjs.Add(new GameObject(new Vector2(e * cellSize, i * cellSize), tCell));
@@ -78,6 +80,19 @@ namespace Game3
             spriteBatch.Begin();
             foreach (GameObject go in gameObjs)
                 go.Draw(gameTime, spriteBatch);
+            ///
+            Vector2 locat = pointA;
+            Vector2 dir = pointB - pointA;
+            float distance = dir.Length();
+            dir.Normalize();
+            float dis = 0;
+            while (dis < distance)
+            {
+                spriteBatch.Draw(dot, locat, Color.White);
+                locat += dir;
+                dis += dir.Length(); ;
+            }
+            ///
             spriteBatch.DrawString(arial, pointA.X + ", " + pointA.Y, new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(arial, pointB.X + ", " + pointB.Y, new Vector2(10, 30), Color.White);
             spriteBatch.DrawString(arial, indx.ToString(), new Vector2(10, 50), Color.White);
@@ -89,10 +104,10 @@ namespace Game3
 
         void Intersection(Vector2 start, Vector2 dir, float distance)
         {
-            int x = (int)Math.Floor(start.X / cellSize);
+            int x = (int)Math.Floor(start.X / cellSize); // стартовая ячейка
             int y = (int)Math.Floor(start.Y / cellSize);
 
-            float nearXPlane, nearYPlane;
+            float nearXPlane, nearYPlane; 
             int stepX, stepY;
             if (dir.X >= 0)
             {
