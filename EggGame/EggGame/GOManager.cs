@@ -87,5 +87,13 @@ namespace EggGame
         {
             balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 30)));
         }
+
+        public void ballTest()
+        {
+            foreach (Ball ball in balls)
+            {
+                ball.direction = new Vector2(ball.direction.X, 0);
+            }
+        }
     }
 }

@@ -48,7 +48,8 @@ namespace EggGame
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && !keyPress)
             {
-                goManager.AddBall();
+                //goManager.AddBall();
+                goManager.ballTest();
                 keyPress = true;
             }
             if (Keyboard.GetState().IsKeyUp(Keys.Space) && keyPress)
