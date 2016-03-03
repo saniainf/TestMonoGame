@@ -20,6 +20,8 @@ namespace Game5
         Vector2 center;
         SpriteFont arial;
         string intersect;
+        Vector2 reflect;
+        float distanceSquare;
 
         public Game1()
         {
@@ -78,12 +80,15 @@ namespace Game5
             center = new Vector2(locationBall.X + ball.Width / 2, locationBall.Y + ball.Height / 2);
             radius = ball.Width / 2;
 
-            Vector2 v = new Vector2(MathHelper.Clamp(center.X, brickRect.Left, brickRect.Right), MathHelper.Clamp(center.Y, brickRect.Top, brickRect.Bottom));
-            Vector2 direction = center - v;
-            float distanceSquare = direction.LengthSquared();
+            Vector2 point = new Vector2(MathHelper.Clamp(center.X, brickRect.Left, brickRect.Right), MathHelper.Clamp(center.Y, brickRect.Top, brickRect.Bottom));
+            Vector2 direction = center - point;
+            Vector2 normal = Vector2.Normalize(direction);
+            distanceSquare = direction.LengthSquared();
             if (distanceSquare > 0 && distanceSquare < radius * radius)
+            {
                 intersect = "TRUE";
-
+                reflect = Vector2.Reflect(direction, normal);
+            }
             base.Update(gameTime);
         }
 
@@ -98,6 +103,8 @@ namespace Game5
             spriteBatch.Draw(brick, brickRect, Color.White);
             spriteBatch.Draw(ball, locationBall, Color.White);
             spriteBatch.DrawString(arial, intersect, new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(arial, distanceSquare.ToString(), new Vector2(10, 30), Color.White);
+            spriteBatch.DrawString(arial, "R", reflect, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }
