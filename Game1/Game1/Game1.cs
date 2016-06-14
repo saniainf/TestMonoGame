@@ -46,7 +46,7 @@ namespace Game1
             maxSpeed = 600;
             acc = 1000;
             frc = 2000;
-            airFrc = 500;
+            airFrc = 100;
             airSpeed = 0;
             maxAirSpeed = 500;
             maxFallSpeed = 500;
