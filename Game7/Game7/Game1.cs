@@ -8,20 +8,6 @@ namespace Game7
     /// This is the main type for your game.
     /// </summary>
     
-    public class myComponent : GameComponent
-    {
-        public override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                
-            }
-
-            // TODO: Add your update logic here
-
-            base.Update(gameTime);
-        }
-    }
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -74,10 +60,8 @@ namespace Game7
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
-
-            // TODO: Add your update logic here
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
 
             base.Update(gameTime);
         }
