@@ -12,6 +12,7 @@ namespace Game7
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
 
         public Game1()
         {
@@ -28,7 +29,7 @@ namespace Game7
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            player = new Player();
             base.Initialize();
         }
 
@@ -62,7 +63,8 @@ namespace Game7
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            
+            player.Update(gameTime);
             base.Update(gameTime);
         }
 
