@@ -25,11 +25,11 @@ namespace EggGame
 
         public void LoadContent()
         {
-            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 35)));
+            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Width / 2, EggGameMain.ScreenRectangle.Height - 35)));
             for (int i = 0; i < 8; i++)
                 for (int e = 0; e < 10; e++)
-                    bricks.Add(new Brick(content, location: new Vector2(EggGameMain.ScreenRectangle.Left + 64 * e + 50, EggGameMain.ScreenRectangle.Top + 32 * i + 50)));
-            paddle = new Paddle(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 30));
+                    bricks.Add(new Brick(content, location: new Vector2(64 * e + 50, 32 * i + 50)));
+            paddle = new Paddle(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Width / 2, EggGameMain.ScreenRectangle.Height - 30));
         }
 
         public void Update(GameTime gameTime)
@@ -85,7 +85,7 @@ namespace EggGame
 
         public void AddBall()
         {
-            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Center.X, EggGameMain.ScreenRectangle.Bottom - 30)));
+            balls.Add(new Ball(content, startPosition: new Vector2(EggGameMain.ScreenRectangle.Width / 2, EggGameMain.ScreenRectangle.Height - 30)));
         }
 
         public void ballTest()

@@ -62,19 +62,19 @@ namespace EggGame
 
         public void checkCollisionToWall()
         {
-            if (CurrentRectangle.Bottom >= EggGameMain.ScreenRectangle.Bottom)
+            if (CurrentRectangle.Bottom >= EggGameMain.ScreenRectangle.Height)
             {
                 direction = Vector2.Reflect(direction, new Vector2(0, 1f));
             }
-            else if (CurrentRectangle.Top <= EggGameMain.ScreenRectangle.Top)
+            else if (CurrentRectangle.Top <= 0)
             {
                 direction = Vector2.Reflect(direction, new Vector2(0, -1f));
             }
-            else if (CurrentRectangle.Left <= EggGameMain.ScreenRectangle.Left)
+            else if (CurrentRectangle.Left <= 0)
             {
                 direction = Vector2.Reflect(direction, new Vector2(1, 0f));
             }
-            else if (CurrentRectangle.Right >= EggGameMain.ScreenRectangle.Right)
+            else if (CurrentRectangle.Right >= EggGameMain.ScreenRectangle.Width)
             {
                 direction = Vector2.Reflect(direction, new Vector2(-1, 0f));
             }

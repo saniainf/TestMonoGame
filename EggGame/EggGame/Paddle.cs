@@ -27,7 +27,7 @@ namespace EggGame
             maxSpeed = 8f;
             spriteSheet = content.Load<Texture2D>("paddle");
             idleAnimation = new Animation(spriteSheet, new Rectangle(0, 0, spriteSheet.Width, spriteSheet.Height), 1, true, 0);
-            locationVector = startPosition ?? new Vector2(EggGameMain.ScreenRectangle.Center.X, 200);
+            locationVector = startPosition ?? new Vector2(EggGameMain.ScreenRectangle.Width/2, 200);
             LoadAnimation(idleAnimation);
             gravity = 0.9f;
             friction = 0.1f;
@@ -71,19 +71,20 @@ namespace EggGame
 
 
             locationVector.X += direction.X * (speed + inertia);
+            collisionToWall();
             base.Update(gameTime);
         }
 
         private void collisionToWall()
         {
-            if (CurrentRectangle.Left <= EggGameMain.ScreenRectangle.Left)
+            if (CurrentRectangle.Left <= 0)
                 locationVector.X = 0;
-            if (CurrentRectangle.Right > EggGameMain.ScreenRectangle.Right)
-                locationVector.X = EggGameMain.ScreenRectangle.Right - CurrentRectangle.Width;
-            if (CurrentRectangle.Top < EggGameMain.ScreenRectangle.Top + 50)
-                locationVector.Y = EggGameMain.ScreenRectangle.Top + 50;
-            if (CurrentRectangle.Bottom > EggGameMain.ScreenRectangle.Bottom)
-                locationVector.Y = EggGameMain.ScreenRectangle.Bottom - CurrentRectangle.Height;
+            if (CurrentRectangle.Right > EggGameMain.ScreenRectangle.Width)
+                locationVector.X = EggGameMain.ScreenRectangle.Width - CurrentRectangle.Width;
+            if (CurrentRectangle.Top < 50)
+                locationVector.Y = 50;
+            if (CurrentRectangle.Bottom > EggGameMain.ScreenRectangle.Height)
+                locationVector.Y = EggGameMain.ScreenRectangle.Height - CurrentRectangle.Height;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

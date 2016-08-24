@@ -20,6 +20,7 @@ namespace Game5
         Vector2 locationBall;
         float radius;
         string intersect;
+        string location;
         SpriteFont arial;
 
         public Game1()
@@ -56,6 +57,7 @@ namespace Game5
             ballRect = new Rectangle(0, 0, ball.Width, ball.Height);
             radius = ball.Width / 2;
             intersect = "";
+            location = "";
         }
 
         /// <summary>
@@ -77,10 +79,21 @@ namespace Game5
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             intersect = "";
+            location = "";
             locationBall = Mouse.GetState().Position.ToVector2();
             ballRect.Location = new Point((int)(locationBall.X - radius), (int)(locationBall.Y - radius));
             if (cross())
+            {
                 intersect = "TRUE";
+                if (ballRect.Center.Y > brickRect.Bottom)
+                    location = "BOT";
+                else if (ballRect.Center.Y < brickRect.Top)
+                    location = "TOP";
+                else if (ballRect.Center.X < brickRect.Left)
+                    location = "LEFT";
+                else if (ballRect.Center.X > brickRect.Right)
+                    location = "RIGHT";
+            }
 
             base.Update(gameTime);
         }
@@ -139,6 +152,7 @@ namespace Game5
             spriteBatch.Draw(brick, brickRect, Color.White);
             spriteBatch.Draw(ball, ballRect, Color.White);
             spriteBatch.DrawString(arial, intersect, new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(arial, location, new Vector2(10, 30), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }

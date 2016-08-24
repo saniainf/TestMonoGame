@@ -41,7 +41,7 @@ namespace Game4
             arial = Content.Load<SpriteFont>("arialbd");
             dot = Content.Load<Texture2D>("dot");
             brick = Content.Load<Texture2D>("brick");
-            rectBrick = new Rectangle(this.Window.ClientBounds.Center.X - brick.Width / 2, this.Window.ClientBounds.Center.Y - brick.Height / 2, brick.Width, brick.Height);
+            rectBrick = new Rectangle(this.Window.ClientBounds.Width / 2 - brick.Width / 2, this.Window.ClientBounds.Height / 2 - brick.Height / 2, brick.Width, brick.Height);
         }
 
         protected override void UnloadContent()
