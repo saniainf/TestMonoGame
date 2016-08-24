@@ -12,16 +12,15 @@ namespace Game5
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
         Texture2D brick;
-        Texture2D ball;
         Rectangle brickRect;
+        Texture2D ball;
+        Rectangle ballRect;
         Vector2 locationBall;
         float radius;
-        Vector2 center;
-        SpriteFont arial;
         string intersect;
-        Vector2 reflect;
-        float distanceSquare;
+        SpriteFont arial;
 
         public Game1()
         {
@@ -38,7 +37,7 @@ namespace Game5
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            //this.IsMouseVisible = true;
+            this.IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -53,7 +52,9 @@ namespace Game5
             brick = Content.Load<Texture2D>("brick");
             ball = Content.Load<Texture2D>("ball");
             arial = Content.Load<SpriteFont>("arialbd");
-            brickRect = new Rectangle(this.Window.ClientBounds.Center.X - brick.Width / 2, this.Window.ClientBounds.Center.Y - brick.Height / 2, brick.Width, brick.Height);
+            brickRect = new Rectangle(this.Window.ClientBounds.Width / 2 - brick.Width / 2, this.Window.ClientBounds.Height / 2 - brick.Height / 2, brick.Width, brick.Height);
+            ballRect = new Rectangle(0, 0, ball.Width, ball.Height);
+            radius = ball.Width / 2;
             intersect = "";
         }
 
@@ -77,19 +78,54 @@ namespace Game5
                 Exit();
             intersect = "";
             locationBall = Mouse.GetState().Position.ToVector2();
-            center = new Vector2(locationBall.X + ball.Width / 2, locationBall.Y + ball.Height / 2);
-            radius = ball.Width / 2;
-
-            Vector2 point = new Vector2(MathHelper.Clamp(center.X, brickRect.Left, brickRect.Right), MathHelper.Clamp(center.Y, brickRect.Top, brickRect.Bottom));
-            Vector2 direction = center - point;
-            Vector2 normal = Vector2.Normalize(direction);
-            distanceSquare = direction.LengthSquared();
-            if (distanceSquare > 0 && distanceSquare < radius * radius)
-            {
+            ballRect.Location = new Point((int)(locationBall.X - radius), (int)(locationBall.Y - radius));
+            if (cross())
                 intersect = "TRUE";
-                reflect = Vector2.Reflect(direction, normal);
-            }
+
             base.Update(gameTime);
+        }
+
+        //bool cross()
+        //{
+        //    //if ((Math.Abs(ballRect.Center.X - brickRect.Center.X)) < brickRect.Width / 2 + radius)
+        //    //{
+        //    //    if ((Math.Abs(ballRect.Center.Y - brickRect.Center.Y)) < brickRect.Height / 2 + radius)
+        //    //        return true;
+        //    //}
+        //    if (!brickRect.Intersects(ballRect))
+        //        return false;
+        //    return
+        //        radius >= distance(ballRect.Center, new Point(brickRect.Left, brickRect.Top)) ||
+        //        radius >= distance(ballRect.Center, new Point(brickRect.Left, brickRect.Bottom)) ||
+        //        radius >= distance(ballRect.Center, new Point(brickRect.Right, brickRect.Top)) ||
+        //        radius >= distance(ballRect.Center, new Point(brickRect.Right, brickRect.Bottom))||
+        //        brickRect.Intersects(ballRect);
+        //}
+
+        bool cross()
+        {
+            Point circleDistance;
+            circleDistance.X = Math.Abs(ballRect.Center.X - brickRect.Center.X);
+            circleDistance.Y = Math.Abs(ballRect.Center.Y - brickRect.Center.Y);
+
+            if (circleDistance.X > (brickRect.Width / 2 + radius))
+                return false;
+            if (circleDistance.Y > (brickRect.Height / 2 + radius))
+                return false;
+
+            if (circleDistance.X <= (brickRect.Width / 2))
+                return true;
+            if (circleDistance.Y <= (brickRect.Height / 2))
+                return true;
+
+            float cornerDistance_sq = (circleDistance.X - brickRect.Width / 2) * (circleDistance.X - brickRect.Width / 2) + (circleDistance.Y - brickRect.Height / 2) * (circleDistance.Y - brickRect.Height / 2);
+
+            return (cornerDistance_sq <= (radius * radius));
+        }
+
+        int distance(Point p1, Point p2)
+        {
+            return Convert.ToInt16(Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y)));
         }
 
         /// <summary>
@@ -101,10 +137,8 @@ namespace Game5
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
             spriteBatch.Draw(brick, brickRect, Color.White);
-            spriteBatch.Draw(ball, locationBall, Color.White);
+            spriteBatch.Draw(ball, ballRect, Color.White);
             spriteBatch.DrawString(arial, intersect, new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(arial, distanceSquare.ToString(), new Vector2(10, 30), Color.White);
-            spriteBatch.DrawString(arial, "R", reflect, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }
