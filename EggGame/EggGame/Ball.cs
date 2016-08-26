@@ -22,7 +22,7 @@ namespace EggGame
         public Ball(ContentManager content, Vector2? startPosition = null)
             : base()
         {
-            speed = 200f;
+            speed = 300f;
             oneUnit = 100f;
 
             direction = new Vector2(0, -1);
