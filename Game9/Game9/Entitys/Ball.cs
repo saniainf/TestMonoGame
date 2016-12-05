@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class Ball : Entity, IDraw, IUpdate
+    class Ball : EntityWithComponent, IDraw
     {
 
         public Texture2D Sprite
@@ -23,13 +23,15 @@ namespace Game9
         }
 
         public Ball()
+            : base()
         {
 
         }
 
-        public void Update()
+        override public void Update()
         {
-            throw new NotImplementedException();
+
+            base.Update();
         }
     }
 }

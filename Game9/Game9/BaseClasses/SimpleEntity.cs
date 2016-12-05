@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game9
 {
-    class Entity
+    class SimpleEntity
     {
         public Vector2 Location = Vector2.Zero;
     }

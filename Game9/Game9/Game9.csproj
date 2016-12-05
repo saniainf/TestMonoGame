@@ -39,13 +39,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Art.cs" />
-    <Compile Include="BaseClasses\Entity.cs" />
+    <Compile Include="BaseClasses\SimpleEntity.cs" />
+    <Compile Include="BaseClasses\EntityWithComponent.cs" />
     <Compile Include="DrawManager.cs" />
     <Compile Include="EntityManager.cs" />
     <Compile Include="Entitys\Ball.cs" />
     <Compile Include="GameRoot.cs" />
     <Compile Include="Interfaces\IDraw.cs" />
-    <Compile Include="Interfaces\IUpdate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -15,6 +15,15 @@ namespace Game9
             get { return instance ?? (instance = new EntityManager()); }
         }
 
+        private List<SimpleEntity> tmpEntitys;
+
+        public EntityManager()
+        {
+            tmpEntitys = new List<SimpleEntity>();
+            Ball b = new Ball();
+            tmpEntitys.Add(b);
+        }
+
         public void Update()
         {
 
