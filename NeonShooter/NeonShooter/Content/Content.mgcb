@@ -235,9 +235,9 @@
 /processorParam:Quality=Best
 /build:Audio/spawn-08.wav
 
-#begin Font.spritefont
+#begin arialbd.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
-/build:Font.spritefont
+/build:arialbd.spritefont
 

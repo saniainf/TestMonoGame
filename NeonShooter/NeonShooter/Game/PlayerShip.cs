@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace NeonShooter
         const int cooldownFrames = 6;
         int cooldownRemaining = 0;
         static Random rand = new Random();
+        int framesUntilRespawn = 0;
+        public bool IsDead { get { return framesUntilRespawn > 0; } }
 
         private static PlayerShip instance;
         public static PlayerShip Instance
@@ -34,6 +37,12 @@ namespace NeonShooter
 
         public override void Update()
         {
+            if (IsDead)
+            {
+                framesUntilRespawn--;
+                return;
+            }
+
             var aim = Input.GetAimDirection();
             if (aim.LengthSquared() > 0 && cooldownRemaining <= 0)
             {
@@ -61,6 +70,17 @@ namespace NeonShooter
 
             if (Velocity.LengthSquared() > 0)
                 Orientation = Velocity.ToAngle();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (!IsDead)
+                base.Draw(spriteBatch);
+        }
+
+        public void Kill()
+        {
+            framesUntilRespawn = 60;
         }
     }
 }

@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CAF46A6A-6500-4B3F-BCE0-05123A83A268}</ProjectGuid>
+    <ProjectGuid>{857087F7-1946-4C30-9FB8-5E3CC10D5447}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NeonShooter</RootNamespace>
-    <AssemblyName>NeonShooter</AssemblyName>
+    <RootNamespace>Game9</RootNamespace>
+    <AssemblyName>Game9</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -38,18 +38,14 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Art.cs" />
+    <Compile Include="BaseClasses\Entity.cs" />
+    <Compile Include="DrawManager.cs" />
+    <Compile Include="EntityManager.cs" />
+    <Compile Include="Entitys\Ball.cs" />
     <Compile Include="GameRoot.cs" />
-    <Compile Include="Game\Art.cs" />
-    <Compile Include="Game\Bullet.cs" />
-    <Compile Include="Game\Enemy.cs" />
-    <Compile Include="Game\EnemySpawner.cs" />
-    <Compile Include="Game\Entity.cs" />
-    <Compile Include="Game\EntityManager.cs" />
-    <Compile Include="Game\Extensions.cs" />
-    <Compile Include="Game\Input.cs" />
-    <Compile Include="Game\MathUtil.cs" />
-    <Compile Include="Game\PlayerShip.cs" />
-    <Compile Include="Game\PlayerStatus.cs" />
+    <Compile Include="Interfaces\IDraw.cs" />
+    <Compile Include="Interfaces\IUpdate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

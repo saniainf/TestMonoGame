@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace NeonShooter
+namespace breakOut
 {
     /// <summary>
     /// This is the main type for your game.
@@ -12,16 +12,10 @@ namespace NeonShooter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static GameRoot Instance { get; private set; }
-        public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
-        public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
-        public static GameTime GameTime { get; private set; }
-
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Instance = this;
         }
 
         /// <summary>
@@ -32,8 +26,9 @@ namespace NeonShooter
         /// </summary>
         protected override void Initialize()
         {
+            // TODO: Add your initialization logic here
+
             base.Initialize();
-            EntityManager.Add(PlayerShip.Instance);
         }
 
         /// <summary>
@@ -44,7 +39,8 @@ namespace NeonShooter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Art.Load(Content);
+
+            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -53,6 +49,7 @@ namespace NeonShooter
         /// </summary>
         protected override void UnloadContent()
         {
+            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -62,13 +59,11 @@ namespace NeonShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            GameTime = gameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            EntityManager.Update();
-            Input.Update();
-            EnemySpawner.Update();
-            PlayerStatus.Update();
+
+            // TODO: Add your update logic here
+
             base.Update(gameTime);
         }
 
@@ -78,29 +73,11 @@ namespace NeonShooter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
-            EntityManager.Draw(spriteBatch);
-            spriteBatch.End();
-
-            spriteBatch.Begin(0, BlendState.Additive);
-
-            spriteBatch.DrawString(Art.Font, "Lives: " + PlayerStatus.Lives, new Vector2(5), Color.White);
-            DrawRightAlignedString("Score: " + PlayerStatus.Score, 5);
-            DrawRightAlignedString("Multiplier: " + PlayerStatus.Multiplier, 35);
-
-            // draw the custom mouse cursor
-            spriteBatch.Draw(Art.Pointer, Input.MousePosition, Color.White);
-            spriteBatch.End();
+            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
-        }
-
-        private void DrawRightAlignedString(string text, float y)
-        {
-            var textWidth = Art.Font.MeasureString(text).X;
-            spriteBatch.DrawString(Art.Font, text, new Vector2(ScreenSize.X - textWidth - 5, y), Color.White);
         }
     }
 }
