@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,28 +11,31 @@ namespace Game9
         SpriteBatch spriteBatch;
 
         public static GameTime GameTime { get; private set; }
+        public static ContentManager GameContent { get; private set; }
 
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            GameRoot.GameContent = Content;
         }
 
         protected override void Initialize()
         {
-
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            //EntityManager.Instance.Initialize();
+            //DrawManager.Instance.Initizlize();
+            SceneLoader.Instance.Initialize();
         }
 
         protected override void UnloadContent()
         {
-            
+
         }
 
         protected override void Update(GameTime gameTime)

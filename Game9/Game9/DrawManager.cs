@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,16 @@ namespace Game9
             get { return instance ?? (instance = new DrawManager()); }
         }
 
+        public DrawManager()
+        {
+
+        }
+
+        public void Initizlize()
+        {
+
+        }
+
         public void Update()
         {
 
@@ -22,7 +33,12 @@ namespace Game9
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
+            foreach (Entity e in (EntityManager.Instance.entities))
+                if (e is IDraw)
+                    spriteBatch.Draw(((IDraw)e).Sprite, e.Location, Color.White);
 
+            spriteBatch.End();
         }
     }
 }

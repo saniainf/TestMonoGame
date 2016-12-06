@@ -7,25 +7,18 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class Ball : EntityWithComponent, IDraw
+    class Ball : Entity, IDraw
     {
 
-        public Texture2D Sprite
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public Texture2D Sprite { get { return sprite; } set { } }
+
+        private Texture2D sprite;
 
         public Ball()
             : base()
         {
-
+            sprite = Art.GetSprite("ball");
+            base.addBehavior(new SimpleBallBehavior());
         }
 
         override public void Update()

@@ -15,18 +15,45 @@ namespace Game9
             get { return instance ?? (instance = new EntityManager()); }
         }
 
-        private List<SimpleEntity> tmpEntitys;
+        public List<Entity> entities { get; private set; }
+
+        private bool isUpdating;
+        private List<Entity> addedEntities;
 
         public EntityManager()
         {
-            tmpEntitys = new List<SimpleEntity>();
-            Ball b = new Ball();
-            tmpEntitys.Add(b);
+            entities = new List<Entity>();
+            addedEntities = new List<Entity>();
+            isUpdating = false;
+        }
+
+        public void Initialize()
+        {
+
         }
 
         public void Update()
         {
+            isUpdating = true;
 
+            foreach (Entity e in entities)
+                e.Update();
+
+            isUpdating = false;
+
+            foreach (Entity e in addedEntities)
+                AddEntity(e);
+            addedEntities.Clear();
+
+            entities = entities.Where(e => !e.IsRemove).ToList();
+        }
+
+        public void AddEntity(Entity e)
+        {
+            if (!isUpdating)
+                entities.Add(e);
+            else
+                addedEntities.Add(e);
         }
     }
 }
