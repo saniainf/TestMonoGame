@@ -18,7 +18,7 @@ namespace Game9
             : base()
         {
             sprite = Art.GetSprite("ball");
-            base.addBehavior(new SimpleBallBehavior());
+            base.addBehavior(new SimpleBallBehavior(Location));
         }
 
         override public void Update()

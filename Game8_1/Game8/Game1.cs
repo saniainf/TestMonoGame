@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Game8
 {
@@ -25,17 +27,15 @@ namespace Game8
         string fpsS;
         float second;
 
-        public delegate void UpdateDelegate();
-        public delegate void DrawDelegate();
-        public event UpdateDelegate onUpdate;
-        public event DrawDelegate onDraw;
+        private List<Ball> balls;
 
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             GameRoot.GameContent = Content;
-            this.Window.Title = "Events";
+            balls = new List<Ball>();
+            this.Window.Title = "List";
         }
 
         /// <summary>
@@ -64,8 +64,7 @@ namespace Game8
             for (int i = 0; i < 10000; i++)
             {
                 Ball ball = new Ball();
-                this.onUpdate += ball.Update;
-                this.onDraw += ball.Draw;
+                balls.Add(ball);
                 GameRoot.CountBall += 1;
             }
         }
@@ -95,8 +94,8 @@ namespace Game8
             }
 
             GameRoot.gameTime = gameTime;
-            if (onUpdate != null)
-                onUpdate();
+            foreach (Ball b in balls)
+                b.Update();
             base.Update(gameTime);
         }
 
@@ -118,8 +117,8 @@ namespace Game8
             }
 
             spriteBatch.Begin();
-            if (onDraw != null)
-                onDraw();
+            foreach (Ball b in balls)
+                b.Draw();
             spriteBatch.DrawString(arial, fpsS, new Vector2(20, 20), Color.Black);
             spriteBatch.DrawString(arial, GameRoot.CountBall.ToString(), new Vector2(20, 50), Color.Black);
             spriteBatch.End();

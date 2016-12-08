@@ -12,7 +12,9 @@ namespace Game8
     public class GameRoot : Game
     {
         GraphicsDeviceManager graphics;
-        public static SpriteBatch spriteBatch;
+        SpriteBatch spriteBatch;
+
+        public static GraphicsDevice gd;
 
         public static Rectangle Screen;
         public static GameTime gameTime { get; private set; }
@@ -59,6 +61,7 @@ namespace Game8
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            gd = GraphicsDevice;
             arial = Content.Load<SpriteFont>("arialbd");
             Screen = this.Window.ClientBounds;
             for (int i = 0; i < 10000; i++)
@@ -95,6 +98,7 @@ namespace Game8
             }
 
             GameRoot.gameTime = gameTime;
+            GameRoot.gd.Clear(Color.CornflowerBlue);
             if (onUpdate != null)
                 onUpdate();
             base.Update(gameTime);
@@ -106,7 +110,7 @@ namespace Game8
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             second += (float)gameTime.ElapsedGameTime.TotalSeconds;
             fps += 1;
@@ -118,11 +122,12 @@ namespace Game8
             }
 
             spriteBatch.Begin();
-            if (onDraw != null)
-                onDraw();
             spriteBatch.DrawString(arial, fpsS, new Vector2(20, 20), Color.Black);
             spriteBatch.DrawString(arial, GameRoot.CountBall.ToString(), new Vector2(20, 50), Color.Black);
             spriteBatch.End();
+            
+            if (onDraw != null)
+                onDraw();
 
             base.Draw(gameTime);
         }
