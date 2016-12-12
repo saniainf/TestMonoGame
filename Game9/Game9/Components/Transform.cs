@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,18 +7,20 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class Drawing : IComponent
+    class Transform : IComponent
     {
-        public Texture2D Sprite { get; set; }
+        public Vector2 Position { get; set; }
+        public Vector2 Size { get; set; }
 
-        public Drawing()
+        public Transform()
         {
-            //Sprite = new Texture2D(GameRoot.ThisGameGraphicsDevice, 0, 0);
+            Position = Vector2.Zero;
+            Size = Vector2.Zero;
         }
 
         public void Initialize()
         {
-
+            
         }
 
         public void Update()
@@ -34,6 +36,7 @@ namespace Game9
             }
             set
             {
+                
             }
         }
     }

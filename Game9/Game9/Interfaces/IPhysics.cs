@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    interface IComponent
+    interface IPhysics
     {
-        bool IsRemove { get; set; }
-
-        void Initialize();
-
-        void Update();
     }
 }

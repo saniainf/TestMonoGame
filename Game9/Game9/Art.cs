@@ -26,7 +26,7 @@ namespace Game9
 
         public static void SetSprite(string id, string path)
         {
-            Texture2D s = GameRoot.GameContent.Load<Texture2D>(path);
+            Texture2D s = GameRoot.ThisGameContent.Load<Texture2D>(path);
             sprites.Add(id, s);
         }
 
@@ -37,7 +37,7 @@ namespace Game9
 
         public static void SetFont(string id, string path)
         {
-            SpriteFont f = GameRoot.GameContent.Load<SpriteFont>(path);
+            SpriteFont f = GameRoot.ThisGameContent.Load<SpriteFont>(path);
             fonts.Add(id, f);
         }
     }

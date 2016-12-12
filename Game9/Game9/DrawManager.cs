@@ -34,9 +34,8 @@ namespace Game9
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            foreach (Entity e in (EntityManager.Instance.entities))
-                if (e is IDraw)
-                    spriteBatch.Draw(((IDraw)e).Sprite, e.Location, Color.White);
+            foreach (Entity e in (EntityManager.Instance.DrawEntities))
+                spriteBatch.Draw(((Drawing)e.GetComponent<Drawing>()).Sprite, ((Transform)e.GetComponent<Transform>()).Position, Color.White);
 
             spriteBatch.End();
         }

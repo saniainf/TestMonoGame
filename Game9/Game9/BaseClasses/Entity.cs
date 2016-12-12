@@ -9,12 +9,10 @@ namespace Game9
 {
     class Entity
     {
-        public Vector2 Location;
-        public Vector2 Size;
         public bool IsRemove;
 
-        private List<IComponent> components;
-        private List<IBehavior> behaviors;
+        private Dictionary<string, IComponent> components;
+        private Dictionary<string, IBehavior> behaviors;
 
         private bool isUpdating;
         private List<IComponent> addedComponents;
@@ -22,41 +20,37 @@ namespace Game9
 
         public Entity()
         {
-            components = new List<IComponent>();
+            components = new Dictionary<string, IComponent>();
             addedComponents = new List<IComponent>();
-            behaviors = new List<IBehavior>();
+            behaviors = new Dictionary<string, IBehavior>();
             addedBehaviors = new List<IBehavior>();
 
-            Location = Vector2.Zero;
-            Size = Vector2.Zero;
             IsRemove = false;
         }
 
         virtual public void Update()
         {
             isUpdating = true;
-            foreach (IComponent c in components)
-                c.Update();
-            foreach (IBehavior b in behaviors)
-                b.Update();
+            // event update
+
             isUpdating = false;
 
             foreach (IComponent c in addedComponents)
                 addComponent(c);
             foreach (IBehavior b in addedBehaviors)
                 addBehavior(b);
-            
+
             addedComponents.Clear();
             addedBehaviors.Clear();
 
-            behaviors = behaviors.Where(b => !b.IsRemove).ToList();
+            //behaviors = behaviors.Where(b => !b.Value.IsRemove).ToDictionary
         }
 
         protected void addComponent(IComponent component)
         {
             component.Initialize();
             if (!isUpdating)
-                components.Add(component);
+                components.Add(component.GetType().Name, component);
             else
                 addedComponents.Add(component);
         }
@@ -65,9 +59,19 @@ namespace Game9
         {
             behavior.Initialize();
             if (!isUpdating)
-                behaviors.Add(behavior);
+                behaviors.Add(behavior.GetType().Name, behavior);
             else
                 addedBehaviors.Add(behavior);
+        }
+
+        public IComponent GetComponent<T>()
+        {
+            return components[typeof(T).Name];
+        }
+
+        public IBehavior GetBehavior<T>()
+        {
+            return behaviors[typeof(T).Name];
         }
     }
 }

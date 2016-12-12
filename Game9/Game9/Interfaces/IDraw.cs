@@ -9,6 +9,6 @@ namespace Game9
 {
     interface IDraw
     {
-        Texture2D Sprite { get; set; }
+        
     }
 }

@@ -21,11 +21,9 @@ namespace Game9
             }
         }
 
-        private Vector2 location;
-
-        public SimpleBallBehavior(Vector2 location)
+        public SimpleBallBehavior()
         {
-            location.X = 100;
+            
         }
 
         public void Initialize()
@@ -35,7 +33,7 @@ namespace Game9
 
         public void Update()
         {
-            location.X += 0.2f;
+            
         }
     }
 }

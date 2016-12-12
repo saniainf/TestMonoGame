@@ -10,14 +10,15 @@ namespace Game9
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static GameTime GameTime { get; private set; }
-        public static ContentManager GameContent { get; private set; }
+        public static GameTime ThisGameTime { get; private set; }
+        public static ContentManager ThisGameContent { get; private set; }
+        public static GraphicsDevice ThisGameGraphicsDevice { get; private set; }
 
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            GameRoot.GameContent = Content;
+            GameRoot.ThisGameContent = Content;
         }
 
         protected override void Initialize()
@@ -28,8 +29,9 @@ namespace Game9
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //EntityManager.Instance.Initialize();
-            //DrawManager.Instance.Initizlize();
+            GameRoot.ThisGameGraphicsDevice = GraphicsDevice;
+            EntityManager.Instance.Initialize();
+            DrawManager.Instance.Initizlize();
             SceneLoader.Instance.Initialize();
         }
 
@@ -40,7 +42,7 @@ namespace Game9
 
         protected override void Update(GameTime gameTime)
         {
-            GameRoot.GameTime = gameTime;
+            GameRoot.ThisGameTime = gameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
