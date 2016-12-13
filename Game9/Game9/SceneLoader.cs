@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,18 @@ namespace Game9
 
         public void Initialize()
         {
-            EntityManager.Instance.AddEntity(new Ball());
+            EntityManager.Instance.Initialize();
+            DrawModule.Instance.Initizlize();
+
+            Ball firstBall = new Ball();
+            Transform ft = firstBall.GetComponent<Transform>() as Transform;
+            ft.Position = new Vector2(50, 50);
+            EntityManager.Instance.AddEntity(firstBall);
+
+            Ball secondBall = new Ball();
+            Transform st = secondBall.GetComponent<Transform>() as Transform;
+            st.Position = new Vector2(100, 100);
+            EntityManager.Instance.AddEntity(secondBall);
         }
 
         private void LoadContent()

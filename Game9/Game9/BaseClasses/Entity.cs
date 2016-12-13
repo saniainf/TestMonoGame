@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class Entity
+    class Entity : IEntity
     {
-        public bool IsRemove;
+        public bool IsRemove { get { return isRemove; } set { isRemove = value; } }
+        private bool isRemove;
+
+        public delegate void UpdateDelegate();
+        public event UpdateDelegate onUpdate;
 
         private Dictionary<string, IComponent> components;
         private Dictionary<string, IBehavior> behaviors;
@@ -24,29 +28,33 @@ namespace Game9
             addedComponents = new List<IComponent>();
             behaviors = new Dictionary<string, IBehavior>();
             addedBehaviors = new List<IBehavior>();
+            setComponent(new Transform(this));
+        }
 
-            IsRemove = false;
+        public void Initialize()
+        {
+
         }
 
         virtual public void Update()
         {
             isUpdating = true;
-            // event update
-
+            onUpdate();
             isUpdating = false;
 
             foreach (IComponent c in addedComponents)
-                addComponent(c);
+                setComponent(c);
             foreach (IBehavior b in addedBehaviors)
-                addBehavior(b);
+                setBehavior(b);
 
             addedComponents.Clear();
             addedBehaviors.Clear();
 
-            //behaviors = behaviors.Where(b => !b.Value.IsRemove).ToDictionary
+            behaviors = behaviors.Where(v => !v.Value.IsRemove).ToDictionary(k => k.Key, v => v.Value);
+            components = components.Where(v => !v.Value.IsRemove).ToDictionary(k => k.Key, v => v.Value);
         }
 
-        protected void addComponent(IComponent component)
+        protected void setComponent(IComponent component)
         {
             component.Initialize();
             if (!isUpdating)
@@ -55,7 +63,7 @@ namespace Game9
                 addedComponents.Add(component);
         }
 
-        protected void addBehavior(IBehavior behavior)
+        protected void setBehavior(IBehavior behavior)
         {
             behavior.Initialize();
             if (!isUpdating)

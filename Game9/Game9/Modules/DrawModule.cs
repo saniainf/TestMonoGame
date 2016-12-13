@@ -8,22 +8,24 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class DrawManager
+    class DrawModule
     {
-        private static DrawManager instance;
-        public static DrawManager Instance
+        public static DrawModule Instance
         {
-            get { return instance ?? (instance = new DrawManager()); }
+            get { return instance ?? (instance = new DrawModule()); }
         }
 
-        public DrawManager()
+        private static DrawModule instance;
+        private SpriteBatch spriteBatch;
+
+        public DrawModule()
         {
 
         }
 
         public void Initizlize()
         {
-
+            spriteBatch = new SpriteBatch(GameRoot.Instance.GraphicsDevice);
         }
 
         public void Update()
@@ -31,12 +33,11 @@ namespace Game9
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
             spriteBatch.Begin();
             foreach (Entity e in (EntityManager.Instance.DrawEntities))
-                spriteBatch.Draw(((Drawing)e.GetComponent<Drawing>()).Sprite, ((Transform)e.GetComponent<Transform>()).Position, Color.White);
-
+                spriteBatch.Draw((e.GetComponent<Drawing>() as Drawing).Sprite, ((e.GetComponent<Transform>()) as Transform).Position, Color.White);
             spriteBatch.End();
         }
     }

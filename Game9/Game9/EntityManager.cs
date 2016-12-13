@@ -34,7 +34,7 @@ namespace Game9
 
         public void Initialize()
         {
-
+            
         }
 
         public void Update()
@@ -51,6 +51,8 @@ namespace Game9
             addedEntities.Clear();
 
             Entities = Entities.Where(e => !e.IsRemove).ToList();
+            DrawEntities = DrawEntities.Where(d => !d.IsRemove).ToList();
+            PhysicsEntities = PhysicsEntities.Where(p => !p.IsRemove).ToList();
         }
 
         public void AddEntity(Entity e)

@@ -12,11 +12,11 @@ namespace Game9
         public Ball()
             : base()
         {
-            Drawing drawComp = new Drawing();
-            addComponent(drawComp);
+            Drawing drawComp = new Drawing(this);
+            setComponent(drawComp);
 
             drawComp.Sprite = Art.GetSprite("ball");
-            base.addBehavior(new SimpleBallBehavior());
+            base.setBehavior(new SimpleBallBehavior(this));
         }
 
         override public void Update()

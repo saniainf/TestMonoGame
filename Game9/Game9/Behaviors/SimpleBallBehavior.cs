@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class SimpleBallBehavior: IBehavior
+    class SimpleBallBehavior : IBehavior
     {
         public bool IsRemove
         {
@@ -17,23 +17,27 @@ namespace Game9
             }
             set
             {
-                
+
             }
         }
 
-        public SimpleBallBehavior()
+        private Entity root;
+
+        public SimpleBallBehavior(Entity rootEntity)
         {
-            
+            root = rootEntity;
+            root.onUpdate += Update;
         }
 
         public void Initialize()
         {
-            
+
         }
 
         public void Update()
         {
-            
+            Transform t = root.GetComponent<Transform>() as Transform;
+            t.Position = new Vector2(t.Position.X + 1f, t.Position.Y);
         }
     }
 }

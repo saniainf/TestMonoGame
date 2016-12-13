@@ -9,10 +9,15 @@ namespace Game9
 {
     class Drawing : IComponent
     {
+        public bool IsRemove { get { return false; } set { } }
         public Texture2D Sprite { get; set; }
 
-        public Drawing()
+        private Entity root;
+        
+        public Drawing(Entity rootEntity)
         {
+            root = rootEntity;
+            root.onUpdate += Update;
             //Sprite = new Texture2D(GameRoot.ThisGameGraphicsDevice, 0, 0);
         }
 
@@ -25,16 +30,5 @@ namespace Game9
         {
 
         }
-
-        public bool IsRemove
-        {
-            get
-            {
-                return false;
-            }
-            set
-            {
-            }
-        }
-    }
+   }
 }
