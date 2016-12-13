@@ -11,6 +11,7 @@ namespace Game9
         public static GameRoot Instance { get; private set; }
         public static GameTime ThisGameTime { get; private set; }
         public static ContentManager ThisGameContent { get; private set; }
+        public static Rectangle Screen;
         public static Random Rnd;
 
         private GraphicsDeviceManager graphics;
@@ -23,6 +24,7 @@ namespace Game9
             GameRoot.Instance = this;
             GameRoot.ThisGameContent = Content;
             GameRoot.Rnd = new Random();
+            Screen = this.Window.ClientBounds;
         }
 
         protected override void Initialize()
