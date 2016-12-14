@@ -12,9 +12,6 @@ namespace Game9
         public bool IsRemove { get { return isRemove; } set { isRemove = value; } }
         private bool isRemove;
 
-        public delegate void UpdateDelegate();
-        public event UpdateDelegate onUpdate;
-
         private Dictionary<string, IComponent> components;
         private Dictionary<string, IBehavior> behaviors;
 
@@ -39,7 +36,10 @@ namespace Game9
         virtual public void Update()
         {
             isUpdating = true;
-            onUpdate();
+            foreach (KeyValuePair<string, IComponent> c in components)
+                c.Value.Update();
+            foreach (KeyValuePair<string, IBehavior> b in behaviors)
+                b.Value.Update();
             isUpdating = false;
 
             foreach (IComponent c in addedComponents)

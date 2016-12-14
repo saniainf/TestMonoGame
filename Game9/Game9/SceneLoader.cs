@@ -22,6 +22,7 @@ namespace Game9
 
         public void Initialize()
         {
+            UIModule.Instance.Initialize();
             EntityManager.Instance.Initialize();
             DrawModule.Instance.Initizlize();
 

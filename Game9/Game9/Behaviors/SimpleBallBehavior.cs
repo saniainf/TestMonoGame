@@ -30,7 +30,6 @@ namespace Game9
         public SimpleBallBehavior(Entity rootEntity)
         {
             root = rootEntity;
-            root.onUpdate += Update;
             speed = 100;
             ballDirection = new Vector2((float)(GameRoot.Rnd.NextDouble()), (float)(GameRoot.Rnd.NextDouble()));
         }

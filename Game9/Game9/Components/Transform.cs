@@ -22,7 +22,6 @@ namespace Game9
             root = rootEntity;
             position = Vector2.Zero;
             size = Vector2.Zero;
-            root.onUpdate += Update;
         }
 
         public void Initialize()

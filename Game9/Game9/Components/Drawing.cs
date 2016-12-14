@@ -17,7 +17,6 @@ namespace Game9
         public Drawing(Entity rootEntity)
         {
             root = rootEntity;
-            root.onUpdate += Update;
             //Sprite = new Texture2D(GameRoot.ThisGameGraphicsDevice, 0, 0);
         }
 

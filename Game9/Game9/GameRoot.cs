@@ -16,7 +16,6 @@ namespace Game9
 
         private GraphicsDeviceManager graphics;
 
-
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -24,12 +23,12 @@ namespace Game9
             GameRoot.Instance = this;
             GameRoot.ThisGameContent = Content;
             GameRoot.Rnd = new Random();
-            Screen = this.Window.ClientBounds;
         }
 
         protected override void Initialize()
         {
             base.Initialize();
+            Screen = this.Window.ClientBounds;
         }
 
         protected override void LoadContent()
