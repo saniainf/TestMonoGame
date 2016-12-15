@@ -25,3 +25,9 @@
 /processorParam:TextureFormat=Color
 /build:egg.png
 
+#begin arialbd.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:arialbd.spritefont
+

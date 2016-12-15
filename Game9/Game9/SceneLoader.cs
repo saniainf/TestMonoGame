@@ -40,6 +40,7 @@ namespace Game9
         private void LoadContent()
         {
             Art.SetSprite("ball", "egg");
+            Art.SetFont("arial", "arialbd");
         }
     }
 }
