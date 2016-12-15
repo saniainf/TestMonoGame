@@ -14,7 +14,7 @@ namespace Game9
         public Vector2 Size { get { return size; } set { size = value; } }
 
         private Entity root;
-        private Vector2 position;
+        private Vector2 position; // center point
         private Vector2 size;
 
         public Transform(Entity rootEntity)
