@@ -39,9 +39,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Art.cs" />
+    <Compile Include="BaseClasses\Collider.cs" />
+    <Compile Include="BaseClasses\Sprite.cs" />
     <Compile Include="BaseClasses\UIEntity.cs" />
     <Compile Include="Behaviors\SimpleBallBehavior.cs" />
     <Compile Include="Components\Drawing.cs" />
+    <Compile Include="Components\PhysicBody.cs" />
     <Compile Include="Components\Transform.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />

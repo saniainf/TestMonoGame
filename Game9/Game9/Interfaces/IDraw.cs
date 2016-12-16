@@ -9,6 +9,6 @@ namespace Game9
 {
     interface IDraw
     {
-        
+        Drawing DrawComponent { get; }
     }
 }

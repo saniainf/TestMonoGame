@@ -22,7 +22,7 @@ namespace Game9
         }
 
         private Entity root;
-        Vector2 ballLocation;
+        Vector2 ballPosition;
         Vector2 ballDirection;
         float speed;
 
@@ -31,7 +31,7 @@ namespace Game9
         {
             root = rootEntity;
             speed = 100;
-            ballDirection = new Vector2((float)(GameRoot.Rnd.NextDouble()), (float)(GameRoot.Rnd.NextDouble()));
+            ballDirection = new Vector2((float)(GameRoot.Rnd.Next(-100, 100)), (float)(GameRoot.Rnd.Next(-100, 100)));
         }
 
         public void Initialize()
@@ -42,21 +42,21 @@ namespace Game9
         public void Update()
         {
             Transform t = root.GetComponent<Transform>() as Transform;
-            ballLocation = t.Position;
+            ballPosition = t.Position;
 
-            if (ballLocation.X >= GameRoot.Screen.Width)
+            if (ballPosition.X >= GameRoot.Screen.Width)
                 ballDirection.X = -Math.Abs(ballDirection.X);
-            if (ballLocation.X <= 0)
+            if (ballPosition.X <= 0)
                 ballDirection.X = Math.Abs(ballDirection.X);
-            if (ballLocation.Y >= GameRoot.Screen.Height)
+            if (ballPosition.Y >= GameRoot.Screen.Height)
                 ballDirection.Y = -Math.Abs(ballDirection.Y);
-            if (ballLocation.Y <= 0)
+            if (ballPosition.Y <= 0)
                 ballDirection.Y = Math.Abs(ballDirection.Y);
 
             ballDirection.Normalize();
-            ballLocation += speed * ballDirection * (float)GameRoot.ThisGameTime.ElapsedGameTime.TotalSeconds;
+            ballPosition += speed * ballDirection * (float)GameRoot.ThisGameTime.ElapsedGameTime.TotalSeconds;
 
-            t.Position = ballLocation;
+            t.Position = ballPosition;
         }
     }
 }

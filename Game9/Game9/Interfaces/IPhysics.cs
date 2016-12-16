@@ -8,5 +8,6 @@ namespace Game9
 {
     interface IPhysics
     {
+        PhysicsBody PhysicsComponent { get; }
     }
 }

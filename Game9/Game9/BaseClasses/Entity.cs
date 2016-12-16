@@ -10,6 +10,7 @@ namespace Game9
     class Entity : IEntity
     {
         public bool IsRemove { get { return isRemove; } set { isRemove = value; } }
+        public Transform TransformComponent { get { return GetComponent<Transform>() as Transform; } }
         private bool isRemove;
 
         private Dictionary<string, IComponent> components;
@@ -26,9 +27,10 @@ namespace Game9
             behaviors = new Dictionary<string, IBehavior>();
             addedBehaviors = new List<IBehavior>();
             setComponent(new Transform(this));
+            Initialize();
         }
 
-        public void Initialize()
+        virtual public void Initialize()
         {
 
         }
@@ -36,10 +38,10 @@ namespace Game9
         virtual public void Update()
         {
             isUpdating = true;
-            foreach (KeyValuePair<string, IComponent> c in components)
-                c.Value.Update();
-            foreach (KeyValuePair<string, IBehavior> b in behaviors)
-                b.Value.Update();
+            foreach (IComponent c in components.Values)
+                c.Update();
+            foreach (IBehavior b in behaviors.Values)
+                b.Update();
             isUpdating = false;
 
             foreach (IComponent c in addedComponents)
@@ -56,18 +58,22 @@ namespace Game9
 
         protected void setComponent(IComponent component)
         {
-            component.Initialize();
             if (!isUpdating)
+            {
+                component.Initialize();
                 components.Add(component.GetType().Name, component);
+            }
             else
                 addedComponents.Add(component);
         }
 
         protected void setBehavior(IBehavior behavior)
         {
-            behavior.Initialize();
             if (!isUpdating)
+            {
+                behavior.Initialize();
                 behaviors.Add(behavior.GetType().Name, behavior);
+            }
             else
                 addedBehaviors.Add(behavior);
         }
