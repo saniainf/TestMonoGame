@@ -27,12 +27,6 @@ namespace Game9
             behaviors = new Dictionary<string, IBehavior>();
             addedBehaviors = new List<IBehavior>();
             setComponent(new Transform(this));
-            Initialize();
-        }
-
-        virtual public void Initialize()
-        {
-
         }
 
         virtual public void Update()
@@ -60,7 +54,6 @@ namespace Game9
         {
             if (!isUpdating)
             {
-                component.Initialize();
                 components.Add(component.GetType().Name, component);
             }
             else
@@ -71,7 +64,6 @@ namespace Game9
         {
             if (!isUpdating)
             {
-                behavior.Initialize();
                 behaviors.Add(behavior.GetType().Name, behavior);
             }
             else

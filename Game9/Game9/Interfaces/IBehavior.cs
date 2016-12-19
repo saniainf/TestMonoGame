@@ -10,8 +10,6 @@ namespace Game9
     {
         bool IsRemove { get; set; }
 
-        void Initialize();
-
         void Update();
     }
 }

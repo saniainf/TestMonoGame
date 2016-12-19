@@ -42,7 +42,6 @@
     <Compile Include="BaseClasses\Collider.cs" />
     <Compile Include="BaseClasses\Sprite.cs" />
     <Compile Include="BaseClasses\UIEntity.cs" />
-    <Compile Include="Behaviors\SimpleBallBehavior.cs" />
     <Compile Include="Components\Drawing.cs" />
     <Compile Include="Components\PhysicBody.cs" />
     <Compile Include="Components\Transform.cs" />
@@ -50,6 +49,7 @@
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Interfaces\IComponent.cs" />
     <Compile Include="BaseClasses\Entity.cs" />
+    <Compile Include="Interfaces\ITransform.cs" />
     <Compile Include="Modules\DrawModule.cs" />
     <Compile Include="EntityManager.cs" />
     <Compile Include="Entitys\Ball.cs" />
@@ -76,6 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

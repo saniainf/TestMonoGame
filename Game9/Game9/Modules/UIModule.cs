@@ -20,11 +20,6 @@ namespace Game9
 
         }
 
-        public void Initialize()
-        {
-
-        }
-
         public void Update()
         {
 

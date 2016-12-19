@@ -15,7 +15,7 @@ namespace Game9
 
     class Collider
     {
-        public Collider2DType Collider2D { get { return collider2D; } set { collider2D = value; } }
+        public Collider2DType ColliderType { get { return collider2D; } set { collider2D = value; } }
         public Vector2 Size { get { return size; } set { size = value; } }
         public float Radius { get { return radius; } set { radius = value; } }
         public Vector2 Offset { get { return offset; } set { offset = value; } }

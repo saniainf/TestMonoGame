@@ -25,18 +25,13 @@ namespace Game9
         {
             if (Input.WasKeyPressed(Keys.A))
             {
-                for (int i = 1; i < 50; i++)
+                for (int i = 1; i < 500; i++)
                     EntityManager.Instance.AddEntity(new Ball());
             }
 
             if (Input.WasKeyPressed(Keys.X))
             {
-                for (int j = 1; j < 10; j++)
-                {
-                    int i = GameRoot.Rnd.Next(EntityManager.Instance.Entities.Count);
-                    if (EntityManager.Instance.Entities.Count > 0)
-                        EntityManager.Instance.Entities[i].IsRemove = true;
-                }
+
             }
         }
     }

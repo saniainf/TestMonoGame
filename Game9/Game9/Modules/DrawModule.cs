@@ -24,11 +24,6 @@ namespace Game9
 
         public DrawModule()
         {
-
-        }
-
-        public void Initizlize()
-        {
             spriteBatch = new SpriteBatch(GameRoot.Instance.GraphicsDevice);
             fpsS = "";
         }
@@ -51,16 +46,19 @@ namespace Game9
 
             spriteBatch.Begin();
 
-            foreach (IDraw e in (EntityManager.Instance.DrawEntities))
+            foreach (IDraw e in (EntityManager.Instance._DrawEntities))
                 foreach (Sprite s in (e.DrawComponent.GetSprite()))
                     spriteBatch.Draw(s.Image, (s.Offset + new Vector2(5f, 3f)), Color.Black);
 
-            foreach (IDraw e in (EntityManager.Instance.DrawEntities))
+            foreach (IDraw e in (EntityManager.Instance._DrawEntities))
                 foreach (Sprite s in (e.DrawComponent.GetSprite()))
-                    spriteBatch.Draw(s.Image, s.Offset, Color.White);
+                    spriteBatch.Draw(s.Image, s.Offset, Color.Green);
+
+            //foreach (IPhysics e in (EntityManager.Instance.PhysicsEntities))
+            //    spriteBatch.DrawString(Art.GetFont("arial"), e.PhysicsComponent.Collider2D.Size.X.ToString() + " " + e.PhysicsComponent.Collider2D.Size.Y.ToString(), e.TransformComponent.Position, Color.Black);
 
             spriteBatch.DrawString(Art.GetFont("arial"), fpsS, new Vector2(20, 20), Color.Black);
-            spriteBatch.DrawString(Art.GetFont("arial"), EntityManager.Instance.Entities.Count.ToString(), new Vector2(20, 40), Color.Black);
+            spriteBatch.DrawString(Art.GetFont("arial"), EntityManager.Instance.EntityCount.ToString(), new Vector2(20, 40), Color.Red);
             spriteBatch.End();
         }
     }

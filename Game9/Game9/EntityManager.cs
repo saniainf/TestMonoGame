@@ -10,9 +10,18 @@ namespace Game9
     class EntityManager
     {
         // entity lists
-        public List<Entity> Entities { get; private set; }
-        public List<Entity> DrawEntities { get; private set; }
-        public List<Entity> PhysicsEntities { get; private set; }
+        public IEnumerable<IEntity> Entities { get { foreach (IEntity e in entities) { yield return e; } } }
+        //public IEnumerable<IDraw> DrawEntities { get { foreach (IDraw drawe in (entities.FindAll(d => d is IDraw))) { yield return drawe; } } }
+        //public IEnumerable<IPhysics> PhysicsEntities { get { foreach (IPhysics pe in (entities.FindAll(p => p is IPhysics))) { yield return pe; } } }
+        public IEnumerable<IDraw> DrawEntities() { foreach (IDraw d in drawEntities) { yield return d; } }
+        public IEnumerable<IPhysics> PhysicsEntities { get { foreach (IPhysics p in physicsEntities) { yield return p; } } }
+        public int EntityCount { get { return entities.Count; } }
+
+        public List<Entity> _DrawEntities { get { return (entities.FindAll(d => d is IDraw)); } }
+
+        private List<Entity> entities;
+        private List<Entity> drawEntities;
+        private List<Entity> physicsEntities;
 
         private static EntityManager instance;
         public static EntityManager Instance
@@ -25,23 +34,18 @@ namespace Game9
 
         public EntityManager()
         {
-            Entities = new List<Entity>();
-            DrawEntities = new List<Entity>();
-            PhysicsEntities = new List<Entity>();
+            entities = new List<Entity>();
+            drawEntities = new List<Entity>();
+            physicsEntities = new List<Entity>();
             addedEntities = new List<Entity>();
             isUpdating = false;
-        }
-
-        public void Initialize()
-        {
-            
         }
 
         public void Update()
         {
             isUpdating = true;
 
-            foreach (Entity e in Entities)
+            foreach (Entity e in entities)
                 e.Update();
 
             isUpdating = false;
@@ -50,20 +54,20 @@ namespace Game9
                 AddEntity(e);
             addedEntities.Clear();
 
-            Entities = Entities.Where(e => !e.IsRemove).ToList();
-            DrawEntities = DrawEntities.Where(d => !d.IsRemove).ToList();
-            PhysicsEntities = PhysicsEntities.Where(p => !p.IsRemove).ToList();
+            entities = entities.Where(e => !e.IsRemove).ToList();
+            drawEntities = drawEntities.Where(d => !d.IsRemove).ToList();
+            physicsEntities = physicsEntities.Where(p => !p.IsRemove).ToList();
         }
 
         public void AddEntity(Entity e)
         {
             if (!isUpdating)
             {
-                Entities.Add(e);
+                entities.Add(e);
                 if (e is IDraw)
-                    DrawEntities.Add(e);
+                    drawEntities.Add(e);
                 if (e is IPhysics)
-                    PhysicsEntities.Add(e);
+                    physicsEntities.Add(e);
             }
             else
                 addedEntities.Add(e);

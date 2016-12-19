@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    interface IPhysics
+    interface IPhysics : ITransform
     {
         PhysicsBody PhysicsComponent { get; }
     }

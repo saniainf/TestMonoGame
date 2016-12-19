@@ -20,10 +20,6 @@ namespace Game9
         public Transform(Entity rootEntity)
         {
             root = rootEntity;
-        }
-
-        public void Initialize()
-        {
             position = Vector2.Zero;
             size = Vector2.Zero;
         }

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    interface IEntity
+    interface ITransform
     {
-        bool IsRemove { get; set; }
-
-        void Update();
+        Transform TransformComponent { get; }
     }
 }
