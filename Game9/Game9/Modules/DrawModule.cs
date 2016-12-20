@@ -46,13 +46,13 @@ namespace Game9
 
             spriteBatch.Begin();
 
-            foreach (IDraw e in (EntityManager.Instance._DrawEntities))
-                foreach (Sprite s in (e.DrawComponent.GetSprite()))
-                    spriteBatch.Draw(s.Image, (s.Offset + new Vector2(5f, 3f)), Color.Black);
+            //foreach (IDraw e in (EntityManager.Instance._DrawEntities))
+            //    foreach (Sprite s in (e.DrawComponent.GetSprite()))
+            //        spriteBatch.Draw(s.Image, (s.Offset + new Vector2(5f, 3f)), Color.Black);
 
-            foreach (IDraw e in (EntityManager.Instance._DrawEntities))
-                foreach (Sprite s in (e.DrawComponent.GetSprite()))
-                    spriteBatch.Draw(s.Image, s.Offset, Color.Green);
+            //foreach (IDraw e in (EntityManager.Instance._DrawEntities))
+            //    foreach (Sprite s in (e.DrawComponent.GetSprite()))
+            //        spriteBatch.Draw(s.Image, s.Offset, Color.Green);
 
             //foreach (IPhysics e in (EntityManager.Instance.PhysicsEntities))
             //    spriteBatch.DrawString(Art.GetFont("arial"), e.PhysicsComponent.Collider2D.Size.X.ToString() + " " + e.PhysicsComponent.Collider2D.Size.Y.ToString(), e.TransformComponent.Position, Color.Black);

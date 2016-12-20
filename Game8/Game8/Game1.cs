@@ -30,6 +30,8 @@ namespace Game8
         public event UpdateDelegate onUpdate;
         public event DrawDelegate onDraw;
 
+        RenderTarget2D rt2d;
+
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -61,13 +63,7 @@ namespace Game8
             spriteBatch = new SpriteBatch(GraphicsDevice);
             arial = Content.Load<SpriteFont>("arialbd");
             Screen = this.Window.ClientBounds;
-            for (int i = 0; i < 10000; i++)
-            {
-                Ball ball = new Ball();
-                this.onUpdate += ball.Update;
-                this.onDraw += ball.Draw;
-                GameRoot.CountBall += 1;
-            }
+            rt2d = new RenderTarget2D(GraphicsDevice, Screen.Width, Screen.Height);
         }
 
         /// <summary>
@@ -91,7 +87,13 @@ namespace Game8
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-
+                for (int i = 0; i < 1000; i++)
+                {
+                    Ball ball = new Ball();
+                    this.onUpdate += ball.Update;
+                    this.onDraw += ball.Draw;
+                    GameRoot.CountBall += 1;
+                }
             }
 
             GameRoot.gameTime = gameTime;
@@ -116,13 +118,22 @@ namespace Game8
                 fpsS = fps.ToString();
                 fps = 0;
             }
+            GraphicsDevice.SetRenderTarget(rt2d);
 
             spriteBatch.Begin();
-            if (onDraw != null)
-                onDraw();
-            spriteBatch.DrawString(arial, fpsS, new Vector2(20, 20), Color.Black);
+            //if (onDraw != null)
+            //    onDraw();
+            spriteBatch.DrawString(arial, fpsS, new Vector2(20, 20), Color.Red);
             spriteBatch.DrawString(arial, GameRoot.CountBall.ToString(), new Vector2(20, 50), Color.Black);
             spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, null, null);
+            spriteBatch.DrawString(arial, fpsS, new Vector2(20, 20), Color.Red);
+            spriteBatch.Draw(rt2d, Vector2.Zero, Color.White);
+            spriteBatch.End();
+
 
             base.Draw(gameTime);
         }

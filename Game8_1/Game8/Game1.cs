@@ -29,6 +29,8 @@ namespace Game8
 
         private List<Ball> balls;
 
+        RenderTarget2D rt2d;
+
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -61,7 +63,8 @@ namespace Game8
             spriteBatch = new SpriteBatch(GraphicsDevice);
             arial = Content.Load<SpriteFont>("arialbd");
             Screen = this.Window.ClientBounds;
-            for (int i = 0; i < 10000; i++)
+            rt2d = new RenderTarget2D(GraphicsDevice, Screen.Width, Screen.Height);
+            for (int i = 0; i < 50000; i++)
             {
                 Ball ball = new Ball();
                 balls.Add(ball);
@@ -105,8 +108,6 @@ namespace Game8
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
             second += (float)gameTime.ElapsedGameTime.TotalSeconds;
             fps += 1;
             if (second >= 1.0f)
@@ -115,13 +116,20 @@ namespace Game8
                 fpsS = fps.ToString();
                 fps = 0;
             }
-
+            //GraphicsDevice.SetRenderTarget(rt2d);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            foreach (Ball b in balls)
-                b.Draw();
+            //foreach (Ball b in balls)
+            //    b.Draw();
             spriteBatch.DrawString(arial, fpsS, new Vector2(20, 20), Color.Black);
             spriteBatch.DrawString(arial, GameRoot.CountBall.ToString(), new Vector2(20, 50), Color.Black);
             spriteBatch.End();
+
+            //GraphicsDevice.SetRenderTarget(null);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
+            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+            //spriteBatch.Draw(rt2d, Vector2.Zero, Color.White);
+            //spriteBatch.End();
 
             base.Draw(gameTime);
         }
