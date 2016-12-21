@@ -36,7 +36,7 @@ namespace Game9
             bodyType = PhysicBodyType.Static;
             collider2D = new Collider();
             collider2D.ColliderType = Collider2DType.Box;
-            collider2D.Size = new Vector2(1f, 1f);
+            collider2D.Size = new Point(1, 1);
             direction = Vector2.Zero;
             velocity = 0f;
             isTrigger = false;

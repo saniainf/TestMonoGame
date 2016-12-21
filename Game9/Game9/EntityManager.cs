@@ -17,8 +17,6 @@ namespace Game9
         public IEnumerable<IPhysics> PhysicsEntities { get { foreach (IPhysics p in physicsEntities) { yield return p; } } }
         public int EntityCount { get { return entities.Count; } }
 
-        public List<Entity> _DrawEntities { get { return (entities.FindAll(d => d is IDraw)); } }
-
         private List<Entity> entities;
         private List<Entity> drawEntities;
         private List<Entity> physicsEntities;

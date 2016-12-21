@@ -25,7 +25,7 @@ namespace Game9
         {
             if (Input.WasKeyPressed(Keys.A))
             {
-                for (int i = 1; i < 500; i++)
+                for (int i = 1; i < 10; i++)
                     EntityManager.Instance.AddEntity(new Ball());
             }
 

@@ -10,15 +10,15 @@ namespace Game9
 {
     class Sprite
     {
-        public Vector2 Offset { get { return offset; } set { offset = value; } }
+        public Rectangle BoundingBox { get { return boundingBox; } set { boundingBox = value; } }
         public Texture2D Image { get { return image; } set { image = value; } }
 
-        private Vector2 offset;
+        private Rectangle boundingBox;
         private Texture2D image;
 
-        public Sprite(Vector2 offset, Texture2D image)
+        public Sprite(Point offset, Texture2D image)
         {
-            this.offset = offset;
+            this.boundingBox = new Rectangle(offset.X - image.Width / 2, offset.Y - image.Height / 2, image.Width, image.Height);
             this.image = image;
         }
     }

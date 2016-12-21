@@ -29,7 +29,7 @@ namespace Game9
         {
             Art.SetSprite("ball", "egg");
             Art.SetSprite("dot", "dot");
-            Art.SetSprite("ship", "ship");
+            Art.SetSprite("ship", "simple-box");
             Art.SetFont("arial", "arialbd");
         }
     }

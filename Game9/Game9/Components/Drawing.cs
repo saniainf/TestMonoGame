@@ -11,22 +11,24 @@ namespace Game9
     class Drawing : IComponent
     {
         public bool IsRemove { get { return false; } set { } }
-        public Vector2 SizeForSprite
+        public Rectangle BoundingBox
         {
             get
             {
-                float minW = 0;
-                float maxW = 0;
-                float minH = 0;
-                float maxH = 0;
+                int minW = 0;
+                int maxW = 0;
+                int minH = 0;
+                int maxH = 0;
                 foreach (Sprite s in images.Values)
                 {
-                    minW = minW > s.Offset.X ? s.Offset.X : minW;
-                    maxW = maxW < s.Offset.X + s.Image.Width ? s.Offset.X + s.Image.Width : maxW;
-                    minH = minH > s.Offset.Y ? s.Offset.Y : minH;
-                    maxH = maxH < s.Offset.Y + s.Image.Height ? s.Offset.Y + s.Image.Height : maxH;
+                    minW = minW > s.BoundingBox.Left ? s.BoundingBox.Left : minW;
+                    maxW = maxW < s.BoundingBox.Right ? s.BoundingBox.Right : maxW;
+                    minH = minH > s.BoundingBox.Top ? s.BoundingBox.Top : minH;
+                    maxH = maxH < s.BoundingBox.Bottom ? s.BoundingBox.Bottom : maxH;
                 }
-                return new Vector2(Math.Abs(minW) + Math.Abs(maxW), Math.Abs(minH) + Math.Abs(maxH));
+                int w = Math.Abs(minW) + Math.Abs(maxW);
+                int h = Math.Abs(minH) + Math.Abs(maxH);
+                return new Rectangle(maxW - w, maxH - h , w, h);
             }
         }
 
@@ -46,14 +48,13 @@ namespace Game9
 
         public IEnumerable<Sprite> GetSprite()
         {
-            Vector2 rootPosition = (root.TransformComponent.Position);
             foreach (Sprite s in images.Values)
             {
-                yield return (new Sprite(s.Offset + rootPosition, s.Image));
+                yield return s;
             }
         }
 
-        public void SetSprite(string id, Vector2 offset, Texture2D image)
+        public void SetSprite(string id, Point offset, Texture2D image)
         {
             images.Add(id, new Sprite(offset, image));
         }
