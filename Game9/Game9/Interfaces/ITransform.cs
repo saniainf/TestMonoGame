@@ -8,6 +8,6 @@ namespace Game9
 {
     interface ITransform
     {
-        Transform TransformComponent { get; }
+        TransformComponent TransformComponent { get; }
     }
 }

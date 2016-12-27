@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class Drawing : IComponent
+    class DrawComponent : IComponent
     {
         public bool IsRemove { get { return false; } set { } }
         public Rectangle BoundingBox
@@ -35,7 +35,7 @@ namespace Game9
         private Entity root;
         private Dictionary<string, Sprite> images;
 
-        public Drawing(Entity rootEntity)
+        public DrawComponent(Entity rootEntity)
         {
             root = rootEntity;
             images = new Dictionary<string, Sprite>();

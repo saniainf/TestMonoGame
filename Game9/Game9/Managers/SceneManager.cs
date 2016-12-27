@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class SceneLoader
+    class SceneManager
     {
-        private static SceneLoader instance;
-        public static SceneLoader Instance
+        public static SceneManager Instance
         {
-            get { return instance ?? (instance = new SceneLoader()); }
+            get { return instance ?? (instance = new SceneManager()); }
         }
+        private static SceneManager instance;
 
-        public SceneLoader()
+        public SceneManager()
         {
             LoadContent();
         }

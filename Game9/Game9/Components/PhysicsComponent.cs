@@ -14,7 +14,7 @@ namespace Game9
         Static
     }
 
-    class PhysicsBody : IComponent
+    class PhysicsComponent : IComponent
     {
         public bool IsRemove { get { return false; } set { } }
         public PhysicBodyType BodyType { get { return bodyType; } set { bodyType = value; } }
@@ -30,7 +30,7 @@ namespace Game9
         private float velocity;
         private bool isTrigger;
 
-        public PhysicsBody(Entity rootEntity)
+        public PhysicsComponent(Entity rootEntity)
         {
             root = rootEntity;
             bodyType = PhysicBodyType.Static;

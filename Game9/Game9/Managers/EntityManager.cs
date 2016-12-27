@@ -13,8 +13,8 @@ namespace Game9
         public IEnumerable<IEntity> Entities { get { foreach (IEntity e in entities) { yield return e; } } }
         //public IEnumerable<IDraw> DrawEntities { get { foreach (IDraw drawe in (entities.FindAll(d => d is IDraw))) { yield return drawe; } } }
         //public IEnumerable<IPhysics> PhysicsEntities { get { foreach (IPhysics pe in (entities.FindAll(p => p is IPhysics))) { yield return pe; } } }
-        public IEnumerable<IDraw> DrawEntities() { foreach (IDraw d in drawEntities) { yield return d; } }
-        public IEnumerable<IPhysics> PhysicsEntities { get { foreach (IPhysics p in physicsEntities) { yield return p; } } }
+        public IEnumerable<IDrawing> DrawEntities() { foreach (IDrawing d in drawEntities) { yield return d; } }
+        public IEnumerable<IPhysic> PhysicsEntities { get { foreach (IPhysic p in physicsEntities) { yield return p; } } }
         public int EntityCount { get { return entities.Count; } }
 
         private List<Entity> entities;
@@ -62,9 +62,9 @@ namespace Game9
             if (!isUpdating)
             {
                 entities.Add(e);
-                if (e is IDraw)
+                if (e is IDrawing)
                     drawEntities.Add(e);
-                if (e is IPhysics)
+                if (e is IPhysic)
                     physicsEntities.Add(e);
             }
             else

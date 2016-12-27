@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class Transform : IComponent
+    class TransformComponent : IComponent
     {
         public bool IsRemove { get { return false; } set { } }
         public Vector2 Position { get { return position; } set { position = value; } }
@@ -17,7 +17,7 @@ namespace Game9
         private Vector2 position; // center point
         private Vector2 size;
 
-        public Transform(Entity rootEntity)
+        public TransformComponent(Entity rootEntity)
         {
             root = rootEntity;
             position = Vector2.Zero;

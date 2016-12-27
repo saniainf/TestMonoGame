@@ -13,7 +13,6 @@ namespace Game9
         {
             get { return instance ?? (instance = new TestModule()); }
         }
-
         private static TestModule instance;
 
         public TestModule()

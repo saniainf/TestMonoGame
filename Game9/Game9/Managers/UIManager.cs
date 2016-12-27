@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class UIModule
+    class UIManager
     {
-        public static UIModule Instance
+        public static UIManager Instance
         {
-            get { return instance ?? (instance = new UIModule()); }
+            get { return instance ?? (instance = new UIManager()); }
         }
 
-        private static UIModule instance;
+        private static UIManager instance;
 
-        public UIModule()
+        public UIManager()
         {
 
         }

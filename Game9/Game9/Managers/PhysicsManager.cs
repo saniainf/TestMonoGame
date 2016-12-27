@@ -7,23 +7,22 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class PhysicsModule
+    class PhysicsManager
     {
-        public static PhysicsModule Instance
+        public static PhysicsManager Instance
         {
-            get { return instance ?? (instance = new PhysicsModule()); }
+            get { return instance ?? (instance = new PhysicsManager()); }
         }
+        private static PhysicsManager instance;
 
-        private static PhysicsModule instance;
-
-        public PhysicsModule()
+        public PhysicsManager()
         {
 
         }
 
         public void Update()
         {
-            foreach (IPhysics physicsItem in EntityManager.Instance.PhysicsEntities)
+            foreach (IPhysic physicsItem in EntityManager.Instance.PhysicsEntities)
             {
                 if (physicsItem.PhysicsComponent.BodyType == PhysicBodyType.Dynamic)
                 {

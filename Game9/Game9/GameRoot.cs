@@ -33,12 +33,12 @@ namespace Game9
 
         protected override void LoadContent()
         {
-            SceneLoader.Instance.Initialize();
+            SceneManager.Instance.Initialize();
         }
 
         protected override void UnloadContent()
         {
-
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -47,10 +47,10 @@ namespace Game9
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             Input.Update();
-            PhysicsModule.Instance.Update();
+            PhysicsManager.Instance.Update();
             TestModule.Instance.Update();
             EntityManager.Instance.Update();
-            DrawModule.Instance.Update();
+            DrawManager.Instance.Update();
 
             base.Update(gameTime);
         }
@@ -58,7 +58,7 @@ namespace Game9
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            DrawModule.Instance.Draw();
+            DrawManager.Instance.Draw();
             base.Draw(gameTime);
         }
     }

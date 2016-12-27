@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    interface IDraw : ITransform
+    interface IDrawing : ITransform
     {
-        Drawing DrawComponent { get; }
+        DrawComponent DrawComponent { get; }
     }
 }
