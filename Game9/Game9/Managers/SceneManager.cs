@@ -27,9 +27,8 @@ namespace Game9
 
         private void LoadContent()
         {
-            Art.SetSprite("ball", "egg");
-            Art.SetSprite("dot", "dot");
-            Art.SetSprite("ship", "simple-box");
+            Art.SetSprite("paddle_mid", "paddle_mid");
+            Art.SetSprite("paddle_left", "paddle_left");
             Art.SetFont("arial", "arialbd");
         }
     }

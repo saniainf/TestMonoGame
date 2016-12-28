@@ -54,9 +54,9 @@ namespace Game9
             }
         }
 
-        public void SetSprite(string id, Point offset, Texture2D image)
+        public void SetSprite(string id, Point offset, Texture2D image, SpriteEffects spriteEffect)
         {
-            images.Add(id, new Sprite(offset, image));
+            images.Add(id, new Sprite(offset, image, spriteEffect));
         }
     }
 }

@@ -20,10 +20,9 @@ namespace Game9
             : base()
         {
             drawComponent = new DrawComponent(this);
-            //drawComp.SetSprite("left", new Point(-16, -16), Art.GetSprite("ship"));
-            //drawComp.SetSprite("right", new Point(64, 64), Art.GetSprite("ship"));
-            //drawComp.SetSprite("center", new Point(0, 0), Art.GetSprite("dot"));
-            drawComponent.SetSprite("single", new Point(0, 0), Art.GetSprite("ship"));
+            drawComponent.SetSprite("paddle_middle", new Point(0, 0), Art.GetSprite("paddle_mid"), SpriteEffects.None);
+            drawComponent.SetSprite("paddle_left", new Point(-28, 0), Art.GetSprite("paddle_left"), SpriteEffects.None);
+            drawComponent.SetSprite("paddle_right", new Point(28, 0), Art.GetSprite("paddle_left"), SpriteEffects.FlipHorizontally);
             setComponent(drawComponent);
 
             physicsComponent = new PhysicsComponent(this);
