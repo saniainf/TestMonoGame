@@ -20,9 +20,9 @@ namespace Game9
             : base()
         {
             drawComponent = new DrawComponent(this);
-            drawComponent.SetSprite("paddle_middle", new Point(0, 0), Art.GetSprite("paddle_mid"), SpriteEffects.None);
-            drawComponent.SetSprite("paddle_left", new Point(-28, 0), Art.GetSprite("paddle_left"), SpriteEffects.None);
-            drawComponent.SetSprite("paddle_right", new Point(28, 0), Art.GetSprite("paddle_left"), SpriteEffects.FlipHorizontally);
+            drawComponent.SetSprite("paddle_middle", new Point(0, 0), Art.GetSprite("paddle_mid"), new Rectangle(0, 0, Art.GetSprite("paddle_mid").Width, Art.GetSprite("paddle_mid").Height), SpriteEffects.None);
+            drawComponent.SetSprite("paddle_left", new Point(-25, 0), Art.GetSprite("paddle_left"), new Rectangle(0, 0, Art.GetSprite("paddle_left").Width, Art.GetSprite("paddle_left").Height), SpriteEffects.None);
+            drawComponent.SetSprite("paddle_right", new Point(25, 0), Art.GetSprite("paddle_left"), new Rectangle(0, 0, Art.GetSprite("paddle_left").Width, Art.GetSprite("paddle_left").Height), SpriteEffects.FlipHorizontally);
             setComponent(drawComponent);
 
             physicsComponent = new PhysicsComponent(this);

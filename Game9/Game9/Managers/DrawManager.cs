@@ -49,15 +49,17 @@ namespace Game9
             foreach (IDrawing e in (EntityManager.Instance.DrawEntities()))
                 foreach (Sprite s in (e.DrawComponent.GetSprite()))
                 {
-                    Vector2 position = new Vector2((e.TransformComponent.Position.X + s.BoundingBox.X + 2), (e.TransformComponent.Position.Y + s.BoundingBox.Y + 2));
-                    spriteBatch.Draw(s.Image, position, null, null, null, 0f, null, Color.Black, s.FlipSprite, 0f);
+                    Vector2 position = Vector2.Add(e.TransformComponent.Position, s.BoundingBox.Location.ToVector2());
+                    position.X += 2;
+                    position.Y += 2;
+                    spriteBatch.Draw(s.Image, position, null, s.SourceRectangle, null, 0f, null, Color.Black, s.FlipSprite, 0f);
                 }
 
             foreach (IDrawing e in (EntityManager.Instance.DrawEntities()))
                 foreach (Sprite s in (e.DrawComponent.GetSprite()))
                 {
-                    Vector2 position = new Vector2((e.TransformComponent.Position.X + s.BoundingBox.X), (e.TransformComponent.Position.Y + s.BoundingBox.Y));
-                    spriteBatch.Draw(s.Image, position, null, null, null, 0f, null, Color.White, s.FlipSprite, 0f);
+                    Vector2 position = Vector2.Add(e.TransformComponent.Position, s.BoundingBox.Location.ToVector2());
+                    spriteBatch.Draw(s.Image, position, null, s.SourceRectangle, null, 0f, null, Color.White, s.FlipSprite, 0f);
                 }
 
             //foreach (IDrawing e in (EntityManager.Instance.DrawEntities()))

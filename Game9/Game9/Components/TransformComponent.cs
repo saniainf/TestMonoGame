@@ -10,6 +10,9 @@ namespace Game9
     class TransformComponent : IComponent
     {
         public bool IsRemove { get { return false; } set { } }
+        /// <summary>
+        /// Entity center point
+        /// </summary>
         public Vector2 Position { get { return position; } set { position = value; } }
         public Vector2 Size { get { return size; } set { size = value; } }
 

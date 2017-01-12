@@ -28,12 +28,13 @@ namespace Game9
                 }
                 int w = Math.Abs(minW) + Math.Abs(maxW);
                 int h = Math.Abs(minH) + Math.Abs(maxH);
-                return new Rectangle(maxW - w, maxH - h , w, h);
+                return new Rectangle(maxW - w, maxH - h, w, h);
             }
         }
 
         private Entity root;
         private Dictionary<string, Sprite> images;
+        private Dictionary<string, Animation> animation;
 
         public DrawComponent(Entity rootEntity)
         {
@@ -54,9 +55,14 @@ namespace Game9
             }
         }
 
-        public void SetSprite(string id, Point offset, Texture2D image, SpriteEffects spriteEffect)
+        public void SetSprite(string id, Point offset, Texture2D image, Rectangle sourceRectangle, SpriteEffects spriteEffect)
         {
-            images.Add(id, new Sprite(offset, image, spriteEffect));
+            images.Add(id, new Sprite(offset, image, sourceRectangle, spriteEffect));
+        }
+
+        public void PlayAnimation(string id)
+        {
+            animation[id].Play();
         }
     }
 }
