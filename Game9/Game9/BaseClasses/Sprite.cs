@@ -39,7 +39,7 @@ namespace Game9
         public Sprite(Point offset, Texture2D image, Rectangle sourceRectangle, SpriteEffects spriteEffect)
         {
             this.FlipSprite = spriteEffect;
-            this.boundingBox = new Rectangle(offset.X - image.Width / 2, offset.Y - image.Height / 2, image.Width, image.Height);
+            this.boundingBox = new Rectangle(offset.X - sourceRectangle.Width / 2, offset.Y - sourceRectangle.Height / 2, sourceRectangle.Width, sourceRectangle.Height);
             this.image = image;
             this.sourceRectangle = sourceRectangle;
         }

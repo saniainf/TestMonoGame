@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Game9
 {
-    class Animation
+    interface IAnimation
     {
-        public void Play()
-        {
-
-        }
+        void Play();
+        void Update();
     }
 }

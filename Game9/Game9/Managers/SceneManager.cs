@@ -29,6 +29,7 @@ namespace Game9
         {
             Art.SetSprite("paddle_mid", "paddle_mid");
             Art.SetSprite("paddle_left", "paddle_left");
+            Art.SetSprite("spriteSheet", "SpriteSheet");
             Art.SetFont("arial", "arialbd");
         }
     }

@@ -15,39 +15,43 @@ namespace Game9
         {
             get
             {
-                int minW = 0;
-                int maxW = 0;
-                int minH = 0;
-                int maxH = 0;
-                foreach (Sprite s in images.Values)
+                Rectangle s;
+                Rectangle rect = images.ElementAt(0).Value.BoundingBox;
+                if (images.Values.Count > 1)
                 {
-                    minW = minW > s.BoundingBox.Left ? s.BoundingBox.Left : minW;
-                    maxW = maxW < s.BoundingBox.Right ? s.BoundingBox.Right : maxW;
-                    minH = minH > s.BoundingBox.Top ? s.BoundingBox.Top : minH;
-                    maxH = maxH < s.BoundingBox.Bottom ? s.BoundingBox.Bottom : maxH;
+                    for (int i = 1; i < images.Values.Count; i++)
+                    {
+                        s = images.ElementAt(i).Value.BoundingBox;
+                        rect = Rectangle.Union(rect, s);
+                    }
                 }
-                int w = Math.Abs(minW) + Math.Abs(maxW);
-                int h = Math.Abs(minH) + Math.Abs(maxH);
-                return new Rectangle(maxW - w, maxH - h, w, h);
+                return rect;
             }
         }
 
         private Entity root;
         private Dictionary<string, Sprite> images;
-        private Dictionary<string, Animation> animation;
+        private Dictionary<string, IAnimation> animations;
 
         public DrawComponent(Entity rootEntity)
         {
             root = rootEntity;
             images = new Dictionary<string, Sprite>();
+            animations = new Dictionary<string, IAnimation>();
         }
 
         public void Update()
         {
-
+            if (animations.Count > 0)
+            {
+                for (int i = 0; i < animations.Count; i++)
+                {
+                    animations.ElementAt(i).Value.Update();
+                }
+            }
         }
 
-        public IEnumerable<Sprite> GetSprite()
+        public IEnumerable<Sprite> GetSprites()
         {
             foreach (Sprite s in images.Values)
             {
@@ -55,14 +59,24 @@ namespace Game9
             }
         }
 
-        public void SetSprite(string id, Point offset, Texture2D image, Rectangle sourceRectangle, SpriteEffects spriteEffect)
+        public Sprite GetSprite(string id)
+        {
+            return images[id];
+        }
+
+        public void AddSprite(string id, Point offset, Texture2D image, Rectangle sourceRectangle, SpriteEffects spriteEffect)
         {
             images.Add(id, new Sprite(offset, image, sourceRectangle, spriteEffect));
         }
 
+        public void AddAnimation(string id, IAnimation animation)
+        {
+            animations.Add(id, animation);
+        }
+
         public void PlayAnimation(string id)
         {
-            animation[id].Play();
+            animations[id].Play();
         }
     }
 }
