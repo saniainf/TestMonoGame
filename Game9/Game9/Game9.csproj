@@ -39,12 +39,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Art.cs" />
+    <Compile Include="BaseClasses\AnimatedSprite.cs" />
     <Compile Include="BaseClasses\Collider.cs" />
+    <Compile Include="BaseClasses\SimpleAnimationPlayer.cs" />
     <Compile Include="BaseClasses\Sprite.cs" />
     <Compile Include="BaseClasses\UIEntity.cs" />
+    <Compile Include="Behaviors\BallInput.cs" />
     <Compile Include="Components\DrawComponent.cs" />
     <Compile Include="Components\PhysicsComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
+    <Compile Include="Inf\Inf.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Interfaces\IAnimation.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
@@ -78,9 +82,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Behaviors\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

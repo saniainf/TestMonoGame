@@ -16,12 +16,12 @@ namespace Game9
             get
             {
                 Rectangle s;
-                Rectangle rect = images.ElementAt(0).Value.BoundingBox;
-                if (images.Values.Count > 1)
+                Rectangle rect = sprites.ElementAt(0).Value.BoundingBox;
+                if (sprites.Values.Count > 1)
                 {
-                    for (int i = 1; i < images.Values.Count; i++)
+                    for (int i = 1; i < sprites.Values.Count; i++)
                     {
-                        s = images.ElementAt(i).Value.BoundingBox;
+                        s = sprites.ElementAt(i).Value.BoundingBox;
                         rect = Rectangle.Union(rect, s);
                     }
                 }
@@ -30,13 +30,13 @@ namespace Game9
         }
 
         private Entity root;
-        private Dictionary<string, Sprite> images;
+        private Dictionary<string, Sprite> sprites;
         private Dictionary<string, IAnimation> animations;
 
         public DrawComponent(Entity rootEntity)
         {
             root = rootEntity;
-            images = new Dictionary<string, Sprite>();
+            sprites = new Dictionary<string, Sprite>();
             animations = new Dictionary<string, IAnimation>();
         }
 
@@ -44,16 +44,19 @@ namespace Game9
         {
             if (animations.Count > 0)
             {
+                IAnimation ani;
                 for (int i = 0; i < animations.Count; i++)
                 {
-                    animations.ElementAt(i).Value.Update();
+                    ani = animations.ElementAt(i).Value;
+                    if (ani.IsPlay)
+                        ani.Update();
                 }
             }
         }
 
         public IEnumerable<Sprite> GetSprites()
         {
-            foreach (Sprite s in images.Values)
+            foreach (Sprite s in sprites.Values)
             {
                 yield return s;
             }
@@ -61,22 +64,33 @@ namespace Game9
 
         public Sprite GetSprite(string id)
         {
-            return images[id];
+            return sprites[id];
         }
 
-        public void AddSprite(string id, Point offset, Texture2D image, Rectangle sourceRectangle, SpriteEffects spriteEffect)
+        public void AddSprite(Sprite sprite)
         {
-            images.Add(id, new Sprite(offset, image, sourceRectangle, spriteEffect));
+            sprites.Add(sprite.Id, sprite);
         }
 
         public void AddAnimation(string id, IAnimation animation)
         {
+            animation.RootDC = this;
             animations.Add(id, animation);
         }
 
         public void PlayAnimation(string id)
         {
             animations[id].Play();
+        }
+
+        public void StopAnimation(string id)
+        {
+            animations[id].Stop();
+        }
+
+        public void PauseAnimation(string id)
+        {
+            animations[id].Pause();
         }
     }
 }
