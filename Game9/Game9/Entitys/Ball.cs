@@ -19,20 +19,26 @@ namespace Game9
         public Ball()
             : base()
         {
-            Sprite pl = new Sprite("paddle_left", new Point(-22, 0), Art.GetImage("spriteSheet"), new Rectangle(0, 256, 44, 22), SpriteEffects.None);
-            Sprite pr = new Sprite("paddle_right", new Point(22, 0), Art.GetImage("spriteSheet"), new Rectangle(0, 256, 44, 22), SpriteEffects.FlipHorizontally);
+            Sprite pl = new Sprite("paddle_left", new Point(-22, 0), Art.GetImage("spriteSheet"), new Rectangle(0, 0, 44, 22), SpriteEffects.None);
+            Sprite pr = new Sprite("paddle_right", new Point(22, 0), Art.GetImage("spriteSheet"), new Rectangle(0, 0, 44, 22), SpriteEffects.FlipHorizontally);
             drawComponent = new DrawComponent(this);
             drawComponent.AddSprite(pl);
             drawComponent.AddSprite(pr);
 
             //animation
-            Rectangle[] rSeq = Inf.RectangleSequence(4, 0, 256, 44, 22, 0, 22);
-            Rectangle[] lSeq = Inf.RectangleSequence(33, 0, 256, 44, 22, 0, 22);
+            //Rectangle[] rSeq = Inf.RectangleSequence(4, 0, 0, 44, 22, 0, 22);
+            //Rectangle[] lSeq = Inf.RectangleSequence(4, 0, 0, 44, 22, 0, 22);
+            Rectangle[] rSeq = Inf.RectangleSequence(4, 0, 88, 44, 22, 0, 22);
+            Rectangle[] lSeq = Inf.RectangleSequence(4, 0, 88, 44, 22, 0, 22);
+            Rectangle[] rSeqReverse = Inf.RectangleSequence(4, 0, 154, 44, 22, 0, -22);
+            Rectangle[] lSeqReverse = Inf.RectangleSequence(4, 0, 154, 44, 22, 0, -22);
+            rSeq.Concat(rSeqReverse);
+            lSeq.Concat(lSeqReverse);
             AnimatedSprite[] ap = new AnimatedSprite[2];
-            ap[0] = new AnimatedSprite(pl.Id, lSeq, true, 0);
-            ap[1] = new AnimatedSprite(pr.Id, rSeq, true, 0);
+            ap[0] = new AnimatedSprite(pl.Id, lSeq, 0);
+            ap[1] = new AnimatedSprite(pr.Id, rSeq, 0);
 
-            SimpleAnimationPlayer flashCornerAnimation = new SimpleAnimationPlayer(ap, 33, 0.5f);
+            SimpleAnimationPlayer flashCornerAnimation = new SimpleAnimationPlayer(ap, true, 8, 0.3f);
             drawComponent.AddAnimation("flashCorner", flashCornerAnimation);
             drawComponent.PlayAnimation("flashCorner");
             //

@@ -15,42 +15,56 @@ namespace Game9
         private DrawComponent dc;
         private AnimatedSprite[] animations;
         private bool isPlay;
-        private int maxFrameCount;
+        private int framesCount;
         private float frameTime;
+        private bool isLooping;
+        private float time;
+        private int frameIndex;
 
-        int i;
-
-        public SimpleAnimationPlayer(AnimatedSprite[] animations, int maxFrameCount, float frameTime)
+        public SimpleAnimationPlayer(AnimatedSprite[] animations, bool isLooping, int framesCount, float frameTime)
         {
+            this.isLooping = isLooping;
             this.animations = animations;
-            this.maxFrameCount = maxFrameCount;
+            this.framesCount = framesCount;
             this.frameTime = frameTime;
+            time = 0f;
             isPlay = false;
 
             // test section
-            i = 0;
+            frameIndex = 0;
         }
 
         public void Play()
         {
             isPlay = true;
+
         }
 
         public void Update()
         {
-            if (i >= maxFrameCount)
-                i = 0;
+            time += (float)GameRoot.ThisGameTime.ElapsedGameTime.TotalSeconds;
+            while (time > frameTime)
+            {
+                time -= frameTime;
+                if (isLooping)
+                {
+                    frameIndex = (frameIndex + 1) % framesCount;
+                }
+                else
+                {
+                    frameIndex = Math.Min(frameIndex + 1, framesCount - 1);
+                }
+
+            }
             for (int j = 0; j < animations.Count(); j++)
             {
-                animations[j].FrameIndex = i;
-                dc.GetSprite(animations[j].SpriteId).SourceRectangle = animations[j].Frame;
+                dc.GetSprite(animations[j].SpriteId).SourceRectangle = animations[j].GetFrame(frameIndex);
             }
-            i++;
         }
 
         public void Stop()
         {
-
+            isPlay = false;
         }
 
         public void Pause()
