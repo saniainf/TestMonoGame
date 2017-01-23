@@ -33,13 +33,13 @@ namespace Game9
             if (Input.WasKeyPressed(Keys.X))
             {
                 DrawComponent dc = rootEntity.GetComponent<DrawComponent>() as DrawComponent;
-                dc.PauseAnimation("flashCorner");
+                dc.PauseAnimation("turretRotation");
             }
 
             if (Input.WasKeyPressed(Keys.Z))
             {
                 DrawComponent dc = rootEntity.GetComponent<DrawComponent>() as DrawComponent;
-                dc.PlayAnimation("flashCorner");
+                dc.PlayAnimation("turretRotation");
             }
         }
     }

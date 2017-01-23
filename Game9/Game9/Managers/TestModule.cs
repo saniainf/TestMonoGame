@@ -17,7 +17,7 @@ namespace Game9
 
         public TestModule()
         {
-            EntityManager.Instance.AddEntity(new Ball());
+            EntityManager.Instance.AddEntity(new Turret());
         }
 
         public void Update()
@@ -25,7 +25,7 @@ namespace Game9
             if (Input.WasKeyPressed(Keys.A))
             {
                 for (int i = 1; i < 5; i++)
-                    EntityManager.Instance.AddEntity(new Ball());
+                    EntityManager.Instance.AddEntity(new Turret());
             }
         }
     }

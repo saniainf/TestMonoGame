@@ -48,6 +48,7 @@
     <Compile Include="Components\DrawComponent.cs" />
     <Compile Include="Components\PhysicsComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
+    <Compile Include="Entitys\Turret.cs" />
     <Compile Include="Inf\Inf.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Interfaces\IAnimation.cs" />

@@ -22,5 +22,22 @@ namespace Game9
             }
             return sequence;
         }
+
+        public static Rectangle[] RectangleSequence(int countWidth, int countHeight, int sheetWidth, int sheetHeight)
+        {
+            Rectangle[] sequence = new Rectangle[countHeight * countHeight];
+            int k = 0;
+            int w = sheetWidth / countWidth;
+            int h = sheetHeight / countHeight;
+            for (int i = 0; i < countHeight; i++)
+            {
+                for (int j = 0; j < countWidth; j++)
+                {
+                    sequence[k] = new Rectangle(j * w, i * h, w, h);
+                    k++;
+                }
+            }
+            return sequence;
+        }
     }
 }

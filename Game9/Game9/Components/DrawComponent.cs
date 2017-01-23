@@ -43,15 +43,8 @@ namespace Game9
         public void Update()
         {
             if (animations.Count > 0)
-            {
-                IAnimation ani;
                 for (int i = 0; i < animations.Count; i++)
-                {
-                    ani = animations.ElementAt(i).Value;
-                    if (ani.IsPlay)
-                        ani.Update();
-                }
-            }
+                    animations.ElementAt(i).Value.Update();
         }
 
         public IEnumerable<Sprite> GetSprites()

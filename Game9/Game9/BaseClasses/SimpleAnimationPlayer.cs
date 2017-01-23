@@ -29,42 +29,49 @@ namespace Game9
             this.frameTime = frameTime;
             time = 0f;
             isPlay = false;
-
-            // test section
             frameIndex = 0;
         }
 
         public void Play()
         {
-            isPlay = true;
-
+            if (!isPlay)
+            {
+                isPlay = true;
+            }
         }
 
         public void Update()
         {
-            time += (float)GameRoot.ThisGameTime.ElapsedGameTime.TotalSeconds;
-            while (time > frameTime)
+            if (isPlay)
             {
-                time -= frameTime;
-                if (isLooping)
+                time += (float)GameRoot.ThisGameTime.ElapsedGameTime.TotalSeconds;
+                while (time > frameTime)
                 {
-                    frameIndex = (frameIndex + 1) % framesCount;
+                    time -= frameTime;
+                    if (isLooping)
+                    {
+                        frameIndex = (frameIndex + 1) % framesCount;
+                    }
+                    else
+                    {
+                        frameIndex = Math.Min(frameIndex + 1, framesCount - 1);
+                    }
+                    if (frameIndex == framesCount - 1 && !isLooping)
+                    {
+                        Stop();
+                    }
                 }
-                else
+                for (int j = 0; j < animations.Count(); j++)
                 {
-                    frameIndex = Math.Min(frameIndex + 1, framesCount - 1);
+                    dc.GetSprite(animations[j].SpriteId).SourceRectangle = animations[j].GetFrame(frameIndex);
                 }
-
-            }
-            for (int j = 0; j < animations.Count(); j++)
-            {
-                dc.GetSprite(animations[j].SpriteId).SourceRectangle = animations[j].GetFrame(frameIndex);
             }
         }
 
         public void Stop()
         {
             isPlay = false;
+            frameIndex = 0;
         }
 
         public void Pause()

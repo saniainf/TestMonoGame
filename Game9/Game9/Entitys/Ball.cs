@@ -28,17 +28,19 @@ namespace Game9
             //animation
             //Rectangle[] rSeq = Inf.RectangleSequence(4, 0, 0, 44, 22, 0, 22);
             //Rectangle[] lSeq = Inf.RectangleSequence(4, 0, 0, 44, 22, 0, 22);
-            Rectangle[] rSeq = Inf.RectangleSequence(4, 0, 88, 44, 22, 0, 22);
-            Rectangle[] lSeq = Inf.RectangleSequence(4, 0, 88, 44, 22, 0, 22);
-            Rectangle[] rSeqReverse = Inf.RectangleSequence(4, 0, 154, 44, 22, 0, -22);
-            Rectangle[] lSeqReverse = Inf.RectangleSequence(4, 0, 154, 44, 22, 0, -22);
-            rSeq.Concat(rSeqReverse);
-            lSeq.Concat(lSeqReverse);
+            //Rectangle[] rSeq = Inf.RectangleSequence(4, 0, 88, 44, 22, 0, 22);
+            //Rectangle[] lSeq = Inf.RectangleSequence(4, 0, 88, 44, 22, 0, 22);
+            Rectangle[] rSeq = Inf.RectangleSequence(8, 0, 848, 44, 22, 0, 22);
+            Rectangle[] lSeq = Inf.RectangleSequence(8, 0, 848, 44, 22, 0, 22);
+            //Rectangle[] rSeqReverse = Inf.RectangleSequence(4, 0, 154, 44, 22, 0, -22);
+            //Rectangle[] lSeqReverse = Inf.RectangleSequence(4, 0, 154, 44, 22, 0, -22);
+            //rSeq = rSeq.Concat(rSeqReverse).ToArray();
+            //lSeq = lSeq.Concat(lSeqReverse).ToArray();
             AnimatedSprite[] ap = new AnimatedSprite[2];
             ap[0] = new AnimatedSprite(pl.Id, lSeq, 0);
             ap[1] = new AnimatedSprite(pr.Id, rSeq, 0);
 
-            SimpleAnimationPlayer flashCornerAnimation = new SimpleAnimationPlayer(ap, true, 8, 0.3f);
+            SimpleAnimationPlayer flashCornerAnimation = new SimpleAnimationPlayer(ap, false, 8, 0.05f);
             drawComponent.AddAnimation("flashCorner", flashCornerAnimation);
             drawComponent.PlayAnimation("flashCorner");
             //

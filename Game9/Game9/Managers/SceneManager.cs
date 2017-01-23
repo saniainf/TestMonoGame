@@ -30,6 +30,7 @@ namespace Game9
             Art.AddImage("paddle_mid", "paddle_mid");
             Art.AddImage("paddle_left", "paddle_left");
             Art.AddImage("spriteSheet", "SpriteSheet");
+            Art.AddImage("turret", "turret");
             Art.SetFont("arial", "arialbd");
         }
     }
