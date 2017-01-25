@@ -20,13 +20,19 @@ namespace Game9
             : base()
         {
             Texture2D textureTurret = Art.GetImage("turret");
-            Sprite sprite = new Sprite("turretBase", new Point(0, 0), textureTurret, new Rectangle(0, 0, textureTurret.Width / 8, textureTurret.Height / 8), SpriteEffects.None);
-            drawComponent = new DrawComponent(this);
-            drawComponent.AddSprite(sprite);
+            Texture2D maskTurret = Art.GetImage("turret-mask");
 
-            Rectangle[] rSeq = Inf.RectangleSequence(8, 8, textureTurret.Width, textureTurret.Height);
-            AnimatedSprite[] ap = new AnimatedSprite[1];
-            ap[0] = new AnimatedSprite(sprite.Id, rSeq, 0);
+            Sprite spriteTurret = new Sprite("turretBase", new Point(0, 0), textureTurret, new Rectangle(0, 0, textureTurret.Width / 8, textureTurret.Height / 8), SpriteEffects.None);
+            Sprite turretMask = new Sprite("turretMask", new Point(0, -5), maskTurret, new Rectangle(0, 0, maskTurret.Width / 8, maskTurret.Height / 8), SpriteEffects.None);
+            drawComponent = new DrawComponent(this);
+            drawComponent.AddSprite(spriteTurret);
+            drawComponent.AddSprite(turretMask);
+
+            Rectangle[] tSeq = Inf.RectangleSequence(8, 8, textureTurret.Width, textureTurret.Height);
+            Rectangle[] mSeq = Inf.RectangleSequence(8, 8, maskTurret.Width, maskTurret.Height);
+            AnimatedSprite[] ap = new AnimatedSprite[2];
+            ap[0] = new AnimatedSprite(spriteTurret.Id, tSeq, 0);
+            ap[1] = new AnimatedSprite(turretMask.Id, mSeq, 0);
 
             SimpleAnimationPlayer turretRotation = new SimpleAnimationPlayer(ap, true, 64, 0.03f);
             drawComponent.AddAnimation("turretRotation", turretRotation);

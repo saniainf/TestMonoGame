@@ -1,18 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace Game7
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player;
+
+        TestComponent tc;
 
         public Game1()
         {
@@ -29,7 +30,7 @@ namespace Game7
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player();
+
             base.Initialize();
         }
 
@@ -41,7 +42,9 @@ namespace Game7
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            tc = new TestComponent();
+            GameComponentCollection gcc = Components;
+            Stream stream = new FileStream("sdfsdf", System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.None);
             // TODO: use this.Content to load your game content here
         }
 
@@ -63,8 +66,9 @@ namespace Game7
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
-            player.Update(gameTime);
+
+            // TODO: Add your update logic here
+
             base.Update(gameTime);
         }
 
