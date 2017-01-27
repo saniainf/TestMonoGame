@@ -7,22 +7,22 @@ using System.Text;
 
 namespace Monocle
 {
-	public class TileGrid : Component
-	{
+    public class TileGrid : Component
+    {
         public Vector2 Position;
         public Color Color = Color.White;
-		public int VisualExtend = 0;
+        public int VisualExtend = 0;
         public MTexture[,] Tiles;
         public Camera ClipCamera;
         public float Alpha = 1f;
 
         public TileGrid(int tileWidth, int tileHeight, int tilesX, int tilesY) 
             : base(false, true)
-		{
-			TileWidth = tileWidth;
-			TileHeight = tileHeight;
+        {
+            TileWidth = tileWidth;
+            TileHeight = tileHeight;
             Tiles = new MTexture[tilesX, tilesY];
-		}
+        }
 
         #region Properties
 
@@ -120,27 +120,27 @@ namespace Monocle
         }
 
         public void FillRect(int x, int y, int columns, int rows, MTexture tile)
-		{
-			int left = Math.Max(0, x);
-			int top = Math.Max(0, y);
-			int right = Math.Min(TilesX, x + columns);
-			int bottom = Math.Min(TilesY, y + rows);
+        {
+            int left = Math.Max(0, x);
+            int top = Math.Max(0, y);
+            int right = Math.Min(TilesX, x + columns);
+            int bottom = Math.Min(TilesY, y + rows);
 
-			for (int tx = left; tx < right; tx++)
-				for (int ty = top; ty < bottom; ty++)
-					Tiles[tx, ty] = tile;
-		}
+            for (int tx = left; tx < right; tx++)
+                for (int ty = top; ty < bottom; ty++)
+                    Tiles[tx, ty] = tile;
+        }
 
-		public void Clear()
-		{
-			for (int tx = 0; tx < TilesX; tx++)
-				for (int ty = 0; ty < TilesY; ty++)
-					Tiles[tx, ty] = null;
-		}
+        public void Clear()
+        {
+            for (int tx = 0; tx < TilesX; tx++)
+                for (int ty = 0; ty < TilesY; ty++)
+                    Tiles[tx, ty] = null;
+        }
 
-		public override void Render()
-		{
-			var pos = Entity.Position + Position;
+        public override void Render()
+        {
+            var pos = Entity.Position + Position;
 
             int left, top, right, bottom;
             if (ClipCamera == null)
@@ -171,7 +171,7 @@ namespace Monocle
                         Tiles[checkX, checkY].Draw(pos + new Vector2(tx * TileWidth, ty * TileHeight), Vector2.Zero, color);
                 }
             }
-		}
+        }
 
-	}
+    }
 }
