@@ -113,6 +113,8 @@ namespace Monocle
             Tracker.Initialize();
             Pooler = new Monocle.Pooler();
             Commands = new Commands();
+
+            nextScene = new Scene();
         }
 
         protected override void LoadContent()
