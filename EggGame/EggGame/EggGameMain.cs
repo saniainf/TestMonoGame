@@ -59,7 +59,7 @@ namespace EggGame
         }
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             goManager.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);
         }

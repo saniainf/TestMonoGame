@@ -118,7 +118,7 @@ namespace Game8
                 fpsS = fps.ToString();
                 fps = 0;
             }
-            GraphicsDevice.SetRenderTarget(rt2d);
+            //GraphicsDevice.SetRenderTarget(rt2d);
 
             spriteBatch.Begin();
             //if (onDraw != null)
@@ -127,7 +127,7 @@ namespace Game8
             spriteBatch.DrawString(arial, GameRoot.CountBall.ToString(), new Vector2(20, 50), Color.Black);
             spriteBatch.End();
 
-            GraphicsDevice.SetRenderTarget(null);
+            //GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, null, null);
             spriteBatch.DrawString(arial, fpsS, new Vector2(20, 20), Color.Red);
